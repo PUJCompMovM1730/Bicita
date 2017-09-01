@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="/Users/stephaniedominguezandrade/AndroidStudioProjects/Bicita/Mockups/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="fe8315dec332c7107c532a2563f4a1be03dd4107">
+        <dex dex="/Users/stephaniedominguezandrade/AndroidStudioProjects/Bicita/Mockups/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_ff00644c0173333d042e23cc511139ee915a6563/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/stephaniedominguezandrade/AndroidStudioProjects/Bicita/Mockups/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="26.0.1"
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="/Users/stephaniedominguezandrade/AndroidStudioProjects/Bicita/Mockups/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_b28858bac84a79a0f2c46433b086b8178a259a29/classes.dex" />
+    </item>
+
+</items>
