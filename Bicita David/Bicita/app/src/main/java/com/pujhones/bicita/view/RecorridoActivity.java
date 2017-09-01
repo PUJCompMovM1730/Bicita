@@ -1,13 +1,14 @@
-package com.example.jaqui_000.drawer;
+package com.pujhones.bicita.view;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import com.pujhones.bicita.R;
 
-public class Promocion extends AppCompatActivity {
+public class RecorridoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_promocion);
+        setContentView(R.layout.activity_recorrido);
     }
 }

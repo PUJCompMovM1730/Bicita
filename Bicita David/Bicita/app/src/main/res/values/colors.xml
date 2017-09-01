@@ -5,4 +5,8 @@
     <color name="colorAccent">#FF4081</color>
     <color name="labelColor">#FF4D4D4D</color>
     <color name="icnColor">#FFFFFFFF</color>
+    <color name="colorBlanco">#FFF</color>
+    <color name="colorNormal">#00645b</color>
+    <color name="colorPressed">#2c988e</color>
+    <color name="cardview_light_background">#FFD4D4D4</color>
 </resources>

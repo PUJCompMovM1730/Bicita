@@ -1,4 +1,4 @@
-package com.example.henrystevensalazar.bicita;
+package com.pujhones.bicita.view;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -29,6 +29,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.pujhones.bicita.R;
 import java.util.ArrayList;
 import java.util.List;
 

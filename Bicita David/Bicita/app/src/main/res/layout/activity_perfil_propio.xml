@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.henrystevensalazar.bicita.PerfilPropioActivity">
+    tools:context="com.example.henrystevensalazar.bicita.com.pujhones.bicita.view.PerfilPropioActivity">
     <de.hdodenhof.circleimageview.CircleImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/profile_image"

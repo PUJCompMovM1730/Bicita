@@ -14,12 +14,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.davl3232.bicita.R;
 import com.pujhones.bicita.model.ElementoListaAmigo;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.pujhones.bicita.R;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -100,7 +101,7 @@ public class AgregarAmigoSolicitudesActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        AmigosActivity.CustomArrayAdapter dataAdapter = new AmigosActivity.CustomArrayAdapter(this, R.id.txtNombre, amigos);
+        CustomArrayAdapter dataAdapter = new CustomArrayAdapter(this, R.id.txtNombre, amigos);
         lstAmigos.setAdapter(dataAdapter);
 
         btnAddFriend = (FloatingActionButton) findViewById(R.id.fab);

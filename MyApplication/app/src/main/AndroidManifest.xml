@@ -22,12 +22,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name="com.pujhones.bicita.view.LoginActivity"
             android:label="@string/title_activity_login" />
         <activity
-            android:name=".RegistrarseActivity"
+            android:name="com.pujhones.bicita.view.RegistrarseActivity"
             android:label="@string/title_activity_registrarse" />
-        <activity android:name=".PerfilPropioActivity"></activity>
+        <activity android:name="com.pujhones.bicita.view.PerfilPropioActivity"></activity>
     </application>
 
 </manifest>

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.jaqui_000.drawer.DrawerActivity"
+    tools:context="com.example.jaqui_000.drawer.com.pujhones.bicita.view.DrawerActivity"
     tools:showIn="@layout/app_bar_drawer">
 
     <ImageView

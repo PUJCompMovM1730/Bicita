@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.jaqui_000.drawer.IniciarRecorridoActivity">
+    tools:context="com.example.jaqui_000.drawer.com.pujhones.bicita.view.IniciarRecorridoActivity">
 
     <ImageView
         android:id="@+id/imageView4"

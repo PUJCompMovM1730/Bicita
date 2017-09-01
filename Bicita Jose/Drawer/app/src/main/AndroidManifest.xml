@@ -12,7 +12,7 @@
 
         <!-- AppTheme -->
         <activity
-            android:name=".DrawerActivity"
+            android:name="com.pujhones.bicita.view.DrawerActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -21,9 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RecorridoActivity" />
-        <activity android:name=".Promocion" />
-        <activity android:name=".IniciarRecorridoActivity"></activity>
+        <activity android:name="com.pujhones.bicita.view.RecorridoActivity" />
+        <activity android:name="com.pujhones.bicita.view.Promocion" />
+        <activity android:name="com.pujhones.bicita.view.IniciarRecorridoActivity"></activity>
     </application>
 
 </manifest>

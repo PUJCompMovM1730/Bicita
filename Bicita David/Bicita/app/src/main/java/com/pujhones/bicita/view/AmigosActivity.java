@@ -14,7 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.davl3232.bicita.R;
+import com.pujhones.bicita.R;
 import com.pujhones.bicita.model.ElementoListaAmigo;
 
 import org.json.JSONArray;
