@@ -28,127 +28,128 @@
             app:layout_constraintRight_toRightOf="parent"
             app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginRight="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/floatingActionButton2"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginEnd="8dp"
-            android:id="@+id/constraintLayout">
+        <!--<android.support.constraint.ConstraintLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginBottom="8dp"-->
+            <!--android:layout_marginRight="8dp"-->
+            <!--app:layout_constraintBottom_toTopOf="@+id/floatingActionButton2"-->
+            <!--app:layout_constraintRight_toRightOf="parent"-->
+            <!--android:layout_marginEnd="8dp"-->
+            <!--android:id="@+id/constraintLayout">-->
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_weight="1"
-                android:text="Terminar Recorrido"
-                android:textColor="#050505"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/floatingActionButton3"
-                app:layout_constraintTop_toTopOf="parent" />
+            <!--<TextView-->
+                <!--android:id="@+id/textView"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginBottom="8dp"-->
+                <!--android:layout_marginEnd="8dp"-->
+                <!--android:layout_marginRight="8dp"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:text="Terminar Recorrido"-->
+                <!--android:textColor="#050505"-->
+                <!--android:textSize="20sp"-->
+                <!--app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--app:layout_constraintTop_toTopOf="parent"-->
+                <!--app:layout_constraintRight_toLeftOf="@+id/floatingActionButton3"/>-->
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/floatingActionButton3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_weight="1"
-                android:clickable="true"
-                app:backgroundTint="@color/colorPressed"
-                app:fabSize="mini"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_check_white_24dp"
-                android:layout_marginEnd="8dp" />
 
-        </android.support.constraint.ConstraintLayout>
+            <!--<android.support.design.widget.FloatingActionButton-->
+                <!--android:id="@+id/floatingActionButton3"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginBottom="8dp"-->
+                <!--android:layout_marginRight="8dp"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:clickable="true"-->
+                <!--app:backgroundTint="@color/colorPressed"-->
+                <!--app:fabSize="mini"-->
+                <!--app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--app:layout_constraintRight_toRightOf="parent"-->
+                <!--app:layout_constraintTop_toTopOf="parent"-->
+                <!--app:srcCompat="@drawable/ic_check_white_24dp"-->
+                <!--android:layout_marginEnd="8dp" />-->
 
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/constraintLayout2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-            app:layout_constraintRight_toRightOf="parent">
+        <!--</android.support.constraint.ConstraintLayout>-->
 
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="8dp"
-                android:text="Buscar Compañeros"
-                android:textColor="#050505"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/floatingActionButton4"
-                app:layout_constraintTop_toTopOf="parent" />
+        <!--<android.support.constraint.ConstraintLayout-->
+            <!--android:id="@+id/constraintLayout2"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginEnd="8dp"-->
+            <!--android:layout_marginRight="8dp"-->
+            <!--app:layout_constraintBottom_toTopOf="@+id/constraintLayout"-->
+            <!--app:layout_constraintRight_toRightOf="parent">-->
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/floatingActionButton4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:clickable="true"
-                app:backgroundTint="@color/colorPressed"
-                app:fabSize="mini"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:srcCompat="@drawable/ic_group_white_24dp" />
-        </android.support.constraint.ConstraintLayout>
+            <!--<TextView-->
+                <!--android:id="@+id/textView3"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginBottom="8dp"-->
+                <!--android:layout_marginEnd="8dp"-->
+                <!--android:layout_marginRight="8dp"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:text="Buscar Compañeros"-->
+                <!--android:textColor="#050505"-->
+                <!--android:textSize="20sp"-->
+                <!--app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--app:layout_constraintRight_toLeftOf="@+id/floatingActionButton4"-->
+                <!--app:layout_constraintTop_toTopOf="parent" />-->
 
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/constraintLayout3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="0dp"
-            android:layout_marginRight="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
-            app:layout_constraintRight_toRightOf="parent">
+            <!--<android.support.design.widget.FloatingActionButton-->
+                <!--android:id="@+id/floatingActionButton4"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginBottom="8dp"-->
+                <!--android:layout_marginEnd="8dp"-->
+                <!--android:layout_marginRight="8dp"-->
+                <!--android:clickable="true"-->
+                <!--app:backgroundTint="@color/colorPressed"-->
+                <!--app:fabSize="mini"-->
+                <!--app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--app:layout_constraintRight_toRightOf="parent"-->
+                <!--app:srcCompat="@drawable/ic_group_white_24dp" />-->
+        <!--</android.support.constraint.ConstraintLayout>-->
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/floatingActionButton5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginRight="8dp"
-                android:clickable="true"
-                app:backgroundTint="@color/colorPressed"
-                app:fabSize="mini"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="@+id/constraintLayout3"
-                app:rippleColor="#ffffff"
-                app:srcCompat="@drawable/ic_share_white_24dp" />
+        <!--<android.support.constraint.ConstraintLayout-->
+            <!--android:id="@+id/constraintLayout3"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginBottom="0dp"-->
+            <!--android:layout_marginRight="8dp"-->
+            <!--app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"-->
+            <!--app:layout_constraintRight_toRightOf="parent">-->
 
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="8dp"
-                android:text="Publicar en redes"
-                android:textColor="#050505"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/floatingActionButton5"
-                app:layout_constraintTop_toTopOf="parent" />
-        </android.support.constraint.ConstraintLayout>
+            <!--<android.support.design.widget.FloatingActionButton-->
+                <!--android:id="@+id/floatingActionButton5"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginBottom="8dp"-->
+                <!--android:layout_marginRight="8dp"-->
+                <!--android:clickable="true"-->
+                <!--app:backgroundTint="@color/colorPressed"-->
+                <!--app:fabSize="mini"-->
+                <!--app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--app:layout_constraintRight_toRightOf="@+id/constraintLayout3"-->
+                <!--app:rippleColor="#ffffff"-->
+                <!--app:srcCompat="@drawable/ic_share_white_24dp" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/textView4"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginBottom="8dp"-->
+                <!--android:layout_marginRight="8dp"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:text="Publicar en redes"-->
+                <!--android:textColor="#050505"-->
+                <!--android:textSize="20sp"-->
+                <!--app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--app:layout_constraintRight_toLeftOf="@+id/floatingActionButton5"-->
+                <!--app:layout_constraintTop_toTopOf="parent" />-->
+        <!--</android.support.constraint.ConstraintLayout>-->
 
 
     </android.support.constraint.ConstraintLayout>

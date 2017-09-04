@@ -14,13 +14,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:enabled="false"
-            android:text="Solicitudes"/>
+            android:enabled="true"
+            android:text="Solicitudes"
+            android:id="@+id/solicitudesBtn"/>
+        />
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:text="Buscar"/>
+            android:text="Buscar"
+            android:enabled="false"/>
     </LinearLayout>
     <ListView
         android:layout_width="0dp"

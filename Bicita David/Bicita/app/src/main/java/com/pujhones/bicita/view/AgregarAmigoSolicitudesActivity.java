@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -72,12 +73,22 @@ public class AgregarAmigoSolicitudesActivity extends AppCompatActivity {
     ArrayList<ElementoListaAmigo> amigos = new ArrayList<>();
 
     ListView lstAmigos;
-    FloatingActionButton btnAddFriend;
+    Button buscar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agregar_amigo_solicitudes);
+
+        buscar = (Button) findViewById(R.id.buscarBtn);
+
+        buscar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(getBaseContext(), AgregarAmigoBuscarActivity.class);
+                startActivity(in);
+            }
+        });
 
         lstAmigos = (ListView) findViewById(R.id.lstAmigos);
 
@@ -101,23 +112,12 @@ public class AgregarAmigoSolicitudesActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        CustomArrayAdapter dataAdapter = new CustomArrayAdapter(this, R.id.txtNombre, amigos);
+        AgregarAmigoSolicitudesActivity.CustomArrayAdapter dataAdapter = new AgregarAmigoSolicitudesActivity.CustomArrayAdapter(this, R.id.txtNombre, amigos);
         lstAmigos.setAdapter(dataAdapter);
-
-        btnAddFriend = (FloatingActionButton) findViewById(R.id.fab);
-        int color = ResourcesCompat.getColor(getResources(), R.color.icnColor, null);
-        Drawable icn = btnAddFriend.getDrawable();
-        btnAddFriend.setColorFilter(color);
 
         setTitle("Amigos");
 
-        btnAddFriend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent in = new Intent(view.getContext(), AgregarAmigoBuscarActivity.class);
-                startActivity(in);
-            }
-        });
+
 
     }
 

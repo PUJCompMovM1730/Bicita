@@ -15,6 +15,7 @@
         <activity android:name="com.pujhones.bicita.view.AgregarAmigoSolicitudesActivity"></activity>
         <activity android:name="com.pujhones.bicita.view.DrawerActivity"></activity>
         <activity android:name="com.pujhones.bicita.view.IniciarRecorridoActivity"></activity>
+        <activity android:name="com.pujhones.bicita.view.RecorridoActivity"></activity>
         <activity android:name="com.pujhones.bicita.view.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
