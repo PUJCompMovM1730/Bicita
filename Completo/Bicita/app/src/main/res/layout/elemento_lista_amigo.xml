@@ -1,0 +1,24 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:id="@+id/layoutListItemAmigo">
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/imgPerfil"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_margin="10dp"
+        android:src="@drawable/horus"/>
+    <TextView
+        android:id="@+id/txtNombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:textSize="18sp"
+        android:textColor="@color/labelColor"
+        android:text="Horus Espinosa" />
+</LinearLayout>
