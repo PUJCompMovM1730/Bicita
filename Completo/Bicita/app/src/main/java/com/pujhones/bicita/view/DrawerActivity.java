@@ -81,8 +81,6 @@ public class DrawerActivity extends AppCompatActivity
             startActivity(in);
         } else if (id == R.id.nav_manage) {
 
-        } else if (id == R.id.trash) {
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

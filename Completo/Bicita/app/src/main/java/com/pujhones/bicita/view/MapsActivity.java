@@ -1,4 +1,4 @@
-package com.example.bicita.moo;
+package com.pujhones.bicita.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +14,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+
+import com.pujhones.bicita.R;
 
 public class MapsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -25,15 +28,23 @@ public class MapsActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        Button fab = (Button) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent in = new Intent(view.getContext(),IniciarRecorridoActivity.class);
+                startActivity(in);
             }
         });
 
+        Button Friends = (Button) findViewById(R.id.Friends);
+        Friends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(view.getContext(),AmigosActivity.class);
+                startActivity(in);
+            }
+        });
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -84,25 +95,26 @@ public class MapsActivity extends AppCompatActivity
 
         if (id == R.id.nav_camera) {
             Intent intent = new Intent(this, CrearRecorridoActivity.class);
-            Log.i("shdsakjhdjkas:","sfhgsdjhfgdsjhgf");
             startActivity(intent);
         } else if (id == R.id.nav_gallery) {
             Intent intentt = new Intent(this, NuevoRecorridoInicioActivity.class);
             startActivity(intentt);
 
         } else if (id == R.id.nav_slideshow) {
-            Intent intent= new Intent(this, Agregar_Amigo_Activity.class);
+            Intent intent= new Intent(this, VerAmigoActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_manage) {
-            Intent intent= new Intent(this, Ver_Amigo_Activity.class);
+            Intent intent= new Intent(this, VerAmigoActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_verrecorridos) {
-            Intent intent= new Intent(this, Ver_Recorrido_Activity.class);
+            Intent intent= new Intent(this, VerRecorridoActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+            Intent intent = new Intent(this,PerfilPropioActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.promo) {
+            Intent intent = new Intent(this,Promocion.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

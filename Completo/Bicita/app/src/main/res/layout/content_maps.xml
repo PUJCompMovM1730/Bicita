@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.bicita.moo.MapsActivity"
+    tools:context="com.pujhones.bicita.view.MapsActivity"
     tools:showIn="@layout/app_bar_maps">
 
     <ImageView
@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="center"
-        app:srcCompat="@drawable/m"
+        app:srcCompat="@drawable/mapa"
         tools:layout_editor_absoluteX="-1dp"
         tools:layout_editor_absoluteY="4dp" />
 <LinearLayout
@@ -30,7 +30,7 @@
         android:queryHint="Buscar"
 
         android:layout_height="50dp"
-        android:background="@color/searchView"
+        android:background="@color/colorWhite"
 
 
         android:visibility="visible"/>

@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.bicita.moo.NuevoRecorridoInicioActivity">
+    tools:context="com.pujhones.bicita.view.NuevoRecorridoInicioActivity">
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="center"
-        app:srcCompat="@drawable/m"
+        app:srcCompat="@drawable/mapa"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="4dp" />
 
@@ -36,7 +36,7 @@
             android:layout_width="368dp"
             android:layout_height="50dp"
 
-            android:background="@color/searchView"
+            android:background="@color/colorWhite"
             android:visibility="visible"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="8dp"
@@ -49,7 +49,7 @@
             android:id="@+id/search_recorrido_fin_2"
             android:layout_width="368dp"
             android:layout_height="50dp"
-            android:background="@color/searchView"
+            android:background="@color/colorWhite"
             android:iconifiedByDefault="false"
             android:queryHint="Fin.."
 
@@ -62,15 +62,6 @@
             android:layout_marginLeft="8dp"
             app:layout_constraintLeft_toLeftOf="parent" />
 
-        <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginRight="8dp"
-            android:text="Menu"
-            app:layout_constraintBottom_toTopOf="@+id/IniciarActividad"
-            app:layout_constraintRight_toRightOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 

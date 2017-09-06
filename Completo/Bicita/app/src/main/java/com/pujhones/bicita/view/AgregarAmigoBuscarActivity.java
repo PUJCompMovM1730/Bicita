@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -73,7 +74,7 @@ public class AgregarAmigoBuscarActivity extends AppCompatActivity {
     ListView lstAmigos;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agregar_amigo_buscar);
 
@@ -101,6 +102,15 @@ public class AgregarAmigoBuscarActivity extends AppCompatActivity {
         }
         AgregarAmigoBuscarActivity.CustomArrayAdapter dataAdapter = new AgregarAmigoBuscarActivity.CustomArrayAdapter(this, R.id.txtNombre, amigos);
         lstAmigos.setAdapter(dataAdapter);
+
+
+        lstAmigos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent in = new Intent(view.getContext(),VerAmigoActivity.class);
+                startActivity(in);
+            }
+        });
         solicitudes = (Button) findViewById(R.id.solicitudesBtn);
 
         solicitudes.setOnClickListener(new View.OnClickListener() {

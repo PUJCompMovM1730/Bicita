@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.jaqui_000.drawer.com.pujhones.bicita.view.IniciarRecorridoActivity">
+    tools:context="com.pujhones.bicita.view.IniciarRecorridoActivity">
 
     <ImageView
         android:id="@+id/imageView4"
@@ -70,12 +70,13 @@
                     android:layout_weight="1"
                     android:orientation="vertical">
 
-                    <ImageView
+                    <ImageButton
                         android:id="@+id/imageView6"
                         android:layout_width="75dp"
                         android:layout_height="75dp"
                         app:srcCompat="@drawable/ic_group_black_24dp"
-                        android:layout_gravity="center"/>
+                        android:layout_gravity="center"
+                        android:background="#fff"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

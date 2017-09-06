@@ -22,11 +22,11 @@
         <activity android:name=".IniciarRecorridoActivity" />
         <activity android:name=".NuevoRecorridoInicioActivity" />
         <activity
-            android:name=".Ver_Amigo_Activity"
+            android:name="com.pujhones.bicita.view.Ver_Amigo_Activity"
             android:label="@string/title_activity_ver__amigo_"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Agregar_Amigo_Activity" />
-        <activity android:name=".Ver_Recorrido_Activity"></activity>
+        <activity android:name="com.pujhones.bicita.view.Agregar_Amigo_Activity" />
+        <activity android:name="com.pujhones.bicita.view.Ver_Recorrido_Activity"></activity>
     </application>
 
 </manifest>

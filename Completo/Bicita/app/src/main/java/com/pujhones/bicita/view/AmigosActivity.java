@@ -10,7 +10,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -71,7 +73,7 @@ public class AmigosActivity extends AppCompatActivity {
     ArrayList<ElementoListaAmigo> amigos = new ArrayList<>();
 
     ListView lstAmigos;
-    FloatingActionButton btnAddFriend;
+    ImageButton btnAddFriend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +105,16 @@ public class AmigosActivity extends AppCompatActivity {
         CustomArrayAdapter dataAdapter = new CustomArrayAdapter(this, R.id.txtNombre, amigos);
         lstAmigos.setAdapter(dataAdapter);
 
-        btnAddFriend = (FloatingActionButton) findViewById(R.id.fab);
+        lstAmigos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent in = new Intent(view.getContext(),EliminarAmigoActivity.class);
+                startActivity(in);
+            }
+        });
+
+
+        btnAddFriend = (ImageButton) findViewById(R.id.fab);
         int color = ResourcesCompat.getColor(getResources(), R.color.icnColor, null);
         Drawable icn = btnAddFriend.getDrawable();
         btnAddFriend.setColorFilter(color);

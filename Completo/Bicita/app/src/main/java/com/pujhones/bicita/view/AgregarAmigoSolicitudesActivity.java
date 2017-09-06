@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -114,7 +115,13 @@ public class AgregarAmigoSolicitudesActivity extends AppCompatActivity {
         }
         AgregarAmigoSolicitudesActivity.CustomArrayAdapter dataAdapter = new AgregarAmigoSolicitudesActivity.CustomArrayAdapter(this, R.id.txtNombre, amigos);
         lstAmigos.setAdapter(dataAdapter);
-
+        lstAmigos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent in = new Intent(view.getContext(),VerAmigoActivity.class);
+                startActivity(in);
+            }
+        });
         setTitle("Amigos");
 
 

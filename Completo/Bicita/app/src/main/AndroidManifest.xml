@@ -25,11 +25,14 @@
         </activity>
         <activity android:name=".view.PerfilPropioActivity" />
         <activity android:name=".view.Promocion" />
-        <activity android:name=".view.RecorridoActivity" />
+        <activity android:name=".view.MapsActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".view.RegistrarseActivity" />
         <activity android:name=".view.VerAmigoActivity" />
         <activity android:name=".view.EliminarAmigoActivity" />
-        <activity android:name=".view.VerRecorridoActivity"></activity>
+        <activity android:name=".view.CrearRecorridoActivity" />
+        <activity android:name=".view.VerRecorridoActivity" />
+        <activity android:name=".view.NuevoRecorridoInicioActivity" />
     </application>
 
 </manifest>

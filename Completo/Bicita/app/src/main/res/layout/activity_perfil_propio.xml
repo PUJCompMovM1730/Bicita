@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.henrystevensalazar.bicita.com.pujhones.bicita.view.PerfilPropioActivity">
+    tools:context=".view.PerfilPropioActivity">
     <de.hdodenhof.circleimageview.CircleImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/profile_image"
@@ -36,4 +36,10 @@
         android:text="horus@horus.com"
         android:textSize="25dp"
         android:gravity="center"/>
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Editar" />
 </LinearLayout>
