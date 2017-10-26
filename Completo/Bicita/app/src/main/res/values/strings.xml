@@ -22,4 +22,10 @@
         completions."
     </string>
     <string name="title_activity_registrarse">Sign in</string>
+
+    <string name="auth_failed">Failed Login</string>
+
+    <string name="title_activity_maps">Map</string>
+    <string name="hintAddress">Ingrese una dirección</string>
+    <string name="unknown_error_message">Error desconocido.</string>
 </resources>
