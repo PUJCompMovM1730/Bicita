@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "844458211686",
+    "firebase_url": "https://bicita-6ebab.firebaseio.com",
+    "project_id": "bicita-6ebab",
+    "storage_bucket": "bicita-6ebab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:844458211686:android:07e979d84eeb7ee0",
+        "android_client_info": {
+          "package_name": "com.pujhones.bicita"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "844458211686-fhtcr1ine2l3c5ct64i9bp8n8p5mbglu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pujhones.bicita",
+            "certificate_hash": "c0d711d85ceb4e79f28a253d9ed3e16bc747860d"
+          }
+        },
+        {
+          "client_id": "844458211686-rake5gen8q1ian5ojlnad6hs66ngn6nu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHPmSv-2ArVL2SsmVezHjbNs5M26BZIRE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "844458211686-rake5gen8q1ian5ojlnad6hs66ngn6nu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
