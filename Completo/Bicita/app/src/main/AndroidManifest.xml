@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.pujhones.bicita">
+          package="com.pujhones.bicita">
 
     <application
         android:allowBackup="true"
@@ -9,30 +9,40 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.MainActivity" />
-        <activity android:name=".view.AmigosActivity" />
-        <activity android:name=".view.AgregarAmigoBuscarActivity" />
-        <activity android:name=".view.AgregarAmigoSolicitudesActivity" />
-        <activity android:name=".view.DrawerActivity" />
-        <activity android:name=".view.IniciarRecorridoActivity" />
-        <activity android:name=".view.RecorridoActivity" />
+        <activity android:name=".view.MainActivity"/>
+        <activity android:name=".view.AmigosActivity"/>
+        <activity android:name=".view.AgregarAmigoBuscarActivity"/>
+        <activity android:name=".view.AgregarAmigoSolicitudesActivity"/>
+        <activity android:name=".view.DrawerActivity"/>
+        <activity android:name=".view.IniciarRecorridoActivity"/>
+        <activity android:name=".view.RecorridoActivity"/>
         <activity android:name=".view.LoginActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".view.PerfilPropioActivity" />
-        <activity android:name=".view.Promocion" />
-        <activity android:name=".view.MapsActivity"
+        <activity android:name=".view.PerfilPropioActivity"/>
+        <activity android:name=".view.Promocion"/>
+        <activity
+            android:name=".view.MapsActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".view.RegistrarseActivity" />
-        <activity android:name=".view.VerAmigoActivity" />
-        <activity android:name=".view.EliminarAmigoActivity" />
-        <activity android:name=".view.CrearRecorridoActivity" />
-        <activity android:name=".view.VerRecorridoActivity" />
-        <activity android:name=".view.NuevoRecorridoInicioActivity" />
+        <activity android:name=".view.RegistrarseActivity"/>
+        <activity android:name=".view.VerAmigoActivity"/>
+        <activity android:name=".view.EliminarAmigoActivity"/>
+        <activity android:name=".view.CrearRecorridoActivity"/>
+        <activity android:name=".view.VerRecorridoActivity"/>
+        <activity android:name=".view.NuevoRecorridoInicioActivity"/>
+        <activity
+            android:name=".view.AgregarAmigosActivity"
+            android:label="@string/title_activity_agregar_amigos"
+            android:parentActivityName=".view.AmigosActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.pujhones.bicita.view.AmigosActivity"/>
+        </activity>
     </application>
 
 </manifest>
