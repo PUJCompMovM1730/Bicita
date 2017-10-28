@@ -28,9 +28,11 @@
     <string name="title_activity_maps">Map</string>
     <string name="hintAddress">Ingrese una dirección</string>
     <string name="unknown_error_message">Error desconocido.</string>
-    
+
     <string-array name="generoSexual">
         <item>Masculino</item>
         <item>Femenino</item>
     </string-array>
+    <string name="title_activity_dsajdklsajdklsjakdlsjakdlsa_pa_ver">Map</string>
+    <string name="google_maps_key">AIzaSyAV0iT67UukS23fqdQ6WpoJaexvjPefcKo</string>
 </resources>
