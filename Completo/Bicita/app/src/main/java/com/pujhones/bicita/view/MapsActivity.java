@@ -112,10 +112,8 @@ public class MapsActivity extends FragmentActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent in = new Intent(view.getContext(), ActualizarPerfilActivity.class);
+                Intent in = new Intent(view.getContext(), IniciarRecorridoActivity.class);
                 startActivity(in);
-                /*Intent in = new Intent(view.getContext(), IniciarRecorridoActivity.class);
-                startActivity(in);*/
             }
         });
 
@@ -123,12 +121,8 @@ public class MapsActivity extends FragmentActivity
         Friends.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mAuth.signOut();
-                Intent in = new Intent(getBaseContext(), LoginActivity.class);
+                Intent in = new Intent(view.getContext(), AmigosActivity.class);
                 startActivity(in);
-                Toast.makeText(getBaseContext(), "entroooooo", Toast.LENGTH_SHORT).show();
-                /*Intent in = new Intent(view.getContext(), AmigosActivity.class);
-                startActivity(in);*/
             }
         });
         /*DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
