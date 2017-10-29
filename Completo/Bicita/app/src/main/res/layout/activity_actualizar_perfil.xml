@@ -9,7 +9,7 @@
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Registro"
+        android:text="Actualizar Perfil"
         android:textSize="20sp"
         android:textColor="@color/black"
         android:padding="25dp"
@@ -56,7 +56,7 @@
                 android:text="Galeria" />
 
             <EditText
-                android:id="@+id/nombreR"
+                android:id="@+id/nombreA"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Nombre"
@@ -65,52 +65,38 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/pesoR"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:hint="Peso Kg"
-                android:inputType="numberDecimal"/>
+                <EditText
+                    android:id="@+id/pesoA"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:hint="Peso Kg"
+                    android:inputType="numberDecimal"/>
 
-            <EditText
-                android:id="@+id/alturaR"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:hint="Altura en Metros"
-                android:inputType="numberDecimal"/>
+                <EditText
+                    android:id="@+id/alturaA"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:hint="Altura en Metros"
+                    android:inputType="numberDecimal"/>
             </LinearLayout>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Género"
-                android:layout_marginTop="10dp"/>
-            <Spinner
-                android:id="@+id/generoR"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginBottom="10dp"/>
             <EditText
-                android:id="@+id/correoR"
+                android:id="@+id/correoA"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Correo Electrónico"
-                android:inputType="textEmailAddress"/>
-            <EditText
-                android:id="@+id/psswR"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Contraseña"
-                android:inputType="textPassword"/>
+                android:inputType="textEmailAddress"
+                android:layout_marginTop="20dp"
+                />
             <Button
-                android:id="@+id/botonRegistro"
+                android:id="@+id/botonActualizar"
                 android:layout_margin="30dp"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Registrarse"
+                android:text="Actualizar"
                 android:textStyle="bold"
                 android:textColor="@color/colorBlanco"
                 android:background="@color/colorPrimaryDark"/>

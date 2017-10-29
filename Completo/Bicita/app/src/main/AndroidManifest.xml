@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.pujhones.bicita">
+    package="com.pujhones.bicita">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -19,18 +19,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.MainActivity"/>
-        <activity android:name=".view.AmigosActivity"/>
-        <activity android:name=".view.AgregarAmigoBuscarActivity"/>
-        <activity android:name=".view.AgregarAmigoSolicitudesActivity"/>
-        <activity android:name=".view.DrawerActivity"/>
-        <activity android:name=".view.IniciarRecorridoActivity"/>
-        <activity android:name=".view.RecorridoActivity"/>
+        <activity android:name=".view.MainActivity" />
+        <activity android:name=".view.AmigosActivity" />
+        <activity android:name=".view.AgregarAmigoBuscarActivity" />
+        <activity android:name=".view.AgregarAmigoSolicitudesActivity" />
+        <activity android:name=".view.DrawerActivity" />
+        <activity android:name=".view.IniciarRecorridoActivity" />
+        <activity android:name=".view.RecorridoActivity" />
         <activity android:name=".view.LoginActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".view.PerfilPropioActivity" />
@@ -46,6 +46,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
         <activity
             android:name=".view.MapsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -55,6 +56,7 @@
         <activity android:name=".view.CrearRecorridoActivity" />
         <activity android:name=".view.VerRecorridoActivity" />
         <activity android:name=".view.NuevoRecorridoInicioActivity" />
+        <activity android:name=".view.ActualizarPerfilActivity"></activity>
     </application>
 
 </manifest>

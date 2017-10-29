@@ -1,7 +1,9 @@
 package com.pujhones.bicita.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Henry Salazar on 26/10/2017.
@@ -12,22 +14,20 @@ public class BiciUsuario {
     private double peso;
     private String nombre;
     private String correo;
-    private String contrasena;
-    private List<String> amigos;
+    private Map<String, String> amigos;
     private double puntaje;
-    private List<String> recorridosDondeAcompania;
+    private Map<String, String> recorridosDondeAcompania;
     private boolean sexo;
     private String photoURL;
 
-    public BiciUsuario(double altura, double peso, String nombre, String correo, String contrasena, boolean sexo, String url) {
+    public BiciUsuario(double altura, double peso, String nombre, String correo, boolean sexo, String url) {
         this.altura = altura;
         this.peso = peso;
         this.nombre = nombre;
         this.correo = correo;
-        this.contrasena = contrasena;
-        this.amigos = new ArrayList<String>();
+        this.amigos = new HashMap<String, String>();
         this.puntaje = 0.0;
-        this.recorridosDondeAcompania = new ArrayList<String>();
+        this.recorridosDondeAcompania = new HashMap<String, String>();
         this.sexo = sexo;
         this.photoURL = url;
     }
@@ -64,19 +64,11 @@ public class BiciUsuario {
         this.correo = correo;
     }
 
-    public String getContrasena() {
-        return contrasena;
-    }
-
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
-    }
-
-    public List<String> getAmigos() {
+    public Map<String, String> getAmigos() {
         return amigos;
     }
 
-    public void setAmigos(List<String> amigos) {
+    public void setAmigos(Map<String, String> amigos) {
         this.amigos = amigos;
     }
 
@@ -88,11 +80,11 @@ public class BiciUsuario {
         this.puntaje = puntaje;
     }
 
-    public List<String> getRecorridosDondeAcompania() {
+    public Map<String, String> getRecorridosDondeAcompania() {
         return recorridosDondeAcompania;
     }
 
-    public void setRecorridosDondeAcompania(List<String> recorridosDondeAcompania) {
+    public void setRecorridosDondeAcompania(Map<String, String> recorridosDondeAcompania) {
         this.recorridosDondeAcompania = recorridosDondeAcompania;
     }
 

@@ -42,6 +42,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.nearby.connection.Strategy;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -62,7 +63,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -93,6 +96,7 @@ public class RegistrarseActivity extends AppCompatActivity implements AdapterVie
 
     public final static String TAG = "REGISTRO";
     public final static String PATH_BICIUSUARIOS = "biciusuarios/";
+    public final static String PATH_STORAGE_FOTOSPRFIL = "fotosPerfil/";
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 2;
 
@@ -170,7 +174,7 @@ public class RegistrarseActivity extends AppCompatActivity implements AdapterVie
                                             //upcrb.setPhotoUri(Uri.parse("path/to/pic"));//fake	 uri,	real	one	coming	soon
                                             user.updateProfile(upcrb.build());
 
-                                            String urlPath = "fotosPerfil/URL:" + user.getUid() + ".jpg";
+                                            String urlPath = PATH_STORAGE_FOTOSPRFIL + "URL::" + user.getUid() + ".jpg";
                                             StorageReference url = storageRef.child(urlPath);
 
 
@@ -207,7 +211,13 @@ public class RegistrarseActivity extends AppCompatActivity implements AdapterVie
                                                     Double.parseDouble(peso.getText().toString()),
                                                     nombre.getText().toString(),
                                                     correo.getText().toString(),
-                                                    pssw.getText().toString(), sexo, urlPath);
+                                                    sexo, urlPath);
+                                            Map<String, String> amigos = new HashMap<String, String>();
+                                            amigos.put(nombre.getText().toString(), user.getUid());
+                                            bu.setAmigos(amigos);
+                                            Map<String, String> recorridos = new HashMap<String, String>();
+                                            recorridos.put("Recorrido1", "id1");
+                                            bu.setRecorridosDondeAcompania(recorridos);
                                             myRef = database.getReference(PATH_BICIUSUARIOS + user.getUid());
                                             myRef.setValue(bu);
                                             Toast.makeText(RegistrarseActivity.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
