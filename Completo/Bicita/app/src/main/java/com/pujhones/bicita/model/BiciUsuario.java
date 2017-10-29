@@ -17,8 +17,9 @@ public class BiciUsuario {
     private double puntaje;
     private List<String> recorridosDondeAcompania;
     private boolean sexo;
+    private String photoURL;
 
-    public BiciUsuario(double altura, double peso, String nombre, String correo, String contrasena, boolean sexo) {
+    public BiciUsuario(double altura, double peso, String nombre, String correo, String contrasena, boolean sexo, String url) {
         this.altura = altura;
         this.peso = peso;
         this.nombre = nombre;
@@ -28,6 +29,7 @@ public class BiciUsuario {
         this.puntaje = 0.0;
         this.recorridosDondeAcompania = new ArrayList<String>();
         this.sexo = sexo;
+        this.photoURL = url;
     }
 
     public double getAltura() {
@@ -100,5 +102,13 @@ public class BiciUsuario {
 
     public void setSexo(boolean sexo) {
         this.sexo = sexo;
+    }
+
+    public String getPhotoURL() {
+        return photoURL;
+    }
+
+    public void setPhotoURL(String photoURL) {
+        this.photoURL = photoURL;
     }
 }
