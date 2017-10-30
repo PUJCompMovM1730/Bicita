@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -19,15 +18,11 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
@@ -35,7 +30,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
-import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -51,20 +45,16 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-//import com.pujhones.bicita.Manifest;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigInfo;
 import com.pujhones.bicita.R;
 import com.pujhones.bicita.model.CustomDrawerButton;
 
 import java.util.List;
-import java.util.jar.Manifest;
 
 public class MapsActivity extends FragmentActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -99,9 +89,6 @@ public class MapsActivity extends FragmentActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);//------------------------------------------------PONER
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         texto = (SearchView) findViewById(R.id.search);
@@ -188,10 +175,6 @@ public class MapsActivity extends FragmentActivity
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        //ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-        //        this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        //drawer.setDrawerListener(toggle);
-        //toggle.syncState();
         customDrawerButton = (CustomDrawerButton) findViewById(R.id.btnOpenDrawer);
         customDrawerButton.setDrawerLayout( drawer );
         customDrawerButton.getDrawerLayout().addDrawerListener( customDrawerButton );
@@ -268,6 +251,11 @@ public class MapsActivity extends FragmentActivity
         } else if (id == R.id.promo) {
             Intent intent = new Intent(this,Promocion.class);
             startActivity(intent);
+        } else if (id == R.id.cerrar) {
+            mAuth.signOut();
+            Intent in = new Intent(getBaseContext(), LoginActivity.class);
+            startActivity(in);
+            Toast.makeText(getBaseContext(), "entroooooo", Toast.LENGTH_SHORT).show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
