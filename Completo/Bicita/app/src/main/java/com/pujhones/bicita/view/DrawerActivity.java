@@ -77,8 +77,7 @@ public class DrawerActivity extends AppCompatActivity
             Intent in = new Intent(this,Promocion.class);
             startActivity(in);
         } else if (id == R.id.nav_slideshow) {
-            Intent in = new Intent(this,IniciarRecorridoActivity.class);
-            startActivity(in);
+
         } else if (id == R.id.nav_manage) {
 
         }

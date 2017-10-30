@@ -74,7 +74,7 @@ public class MapsActivity extends FragmentActivity
     Button friends;
     Geocoder geo;
     SearchView texto;
-    LinearLayout back;
+    Button back;
     LinearLayout modal;
     ImageButton crear;
     ImageButton imageView6;
@@ -96,12 +96,20 @@ public class MapsActivity extends FragmentActivity
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         texto = (SearchView) findViewById(R.id.search);
         modal = (LinearLayout) findViewById(R.id.modal);
-        back = (LinearLayout) findViewById(R.id.back);
+        back = (Button) findViewById(R.id.back);
         geo = new Geocoder(getBaseContext());
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mLocationRequest = createLocationRequest();
 
-
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                back.setVisibility(View.INVISIBLE);
+                modal.setVisibility(View.INVISIBLE);
+                fab.setVisibility(View.VISIBLE);
+                friends.setVisibility(View.VISIBLE);
+            }
+        });
         texto.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {

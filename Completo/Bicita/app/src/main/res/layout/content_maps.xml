@@ -29,7 +29,7 @@
             android:background="@color/colorWhite"
             android:visibility="visible"/>
     </LinearLayout>
-    <LinearLayout
+    <Button
         android:id="@+id/back"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -42,7 +42,8 @@
         android:layout_gravity="bottom"
         android:orientation="vertical"
         android:background="#ffffff"
-        android:visibility="invisible">
+        android:visibility="invisible"
+        android:translationZ="10px">
 
         <TextView
             android:id="@+id/textView2"
