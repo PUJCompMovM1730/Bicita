@@ -3,7 +3,6 @@ package com.pujhones.bicita.view;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -124,7 +123,7 @@ public class AmigosActivity extends AppCompatActivity {
         btnAddFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent in = new Intent(view.getContext(), AgregarAmigoBuscarActivity.class);
+                Intent in = new Intent(view.getContext(), AgregarAmigosActivity.class);
                 startActivity(in);
             }
         });
