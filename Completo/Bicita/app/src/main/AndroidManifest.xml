@@ -24,7 +24,6 @@
         <activity android:name=".view.AgregarAmigoBuscarActivity" />
         <activity android:name=".view.AgregarAmigoSolicitudesActivity" />
         <activity android:name=".view.DrawerActivity" />
-        <activity android:name=".view.IniciarRecorridoActivity" />
         <activity android:name=".view.RecorridoActivity" />
         <activity android:name=".view.LoginActivity">
             <intent-filter>

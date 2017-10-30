@@ -21,6 +21,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -50,6 +52,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 //import com.pujhones.bicita.Manifest;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigInfo;
 import com.pujhones.bicita.R;
 
 import java.util.List;
@@ -58,11 +61,24 @@ import java.util.jar.Manifest;
 public class MapsActivity extends FragmentActivity
         implements OnMapReadyCallback {
 
+    public static final double lowerLeftLatitude = 4.484987;
+    public static final double lowerLeftLongitude= -74.212539;
+    public static final double upperRightLatitude= 4.769700;
+    public static final double upperRigthLongitude= -74.009979;
+
     private static final int REQUEST_CHECK_SETTINGS = 2;
     public	final	static	double	RADIUS_OF_EARTH_KM	 =	6371;
+
     private GoogleMap mMap;
+    Button fab;
+    Button friends;
     Geocoder geo;
     SearchView texto;
+    LinearLayout back;
+    LinearLayout modal;
+    ImageButton crear;
+    ImageButton imageView6;
+
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationRequest mLocationRequest;
     private LocationCallback mLocationCallback;
@@ -79,17 +95,23 @@ public class MapsActivity extends FragmentActivity
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         texto = (SearchView) findViewById(R.id.search);
+        modal = (LinearLayout) findViewById(R.id.modal);
+        back = (LinearLayout) findViewById(R.id.back);
         geo = new Geocoder(getBaseContext());
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mLocationRequest = createLocationRequest();
 
-        texto.setOnKeyListener(new View.OnKeyListener() {
+
+        texto.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (keyCode == event.KEYCODE_ENTER) {
-                    buscarDireccion();
-                }
+            public boolean onQueryTextSubmit(String s) {
+                buscarDireccion(s);
                 return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
             }
         });
 
@@ -108,23 +130,47 @@ public class MapsActivity extends FragmentActivity
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        Button fab = (Button) findViewById(R.id.fab);
+        fab = (Button) findViewById(R.id.fab);
+        friends = (Button) findViewById(R.id.Friends);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent in = new Intent(view.getContext(), IniciarRecorridoActivity.class);
-                startActivity(in);
+                //Intent in = new Intent(view.getContext(), IniciarRecorridoActivity.class);
+                //startActivity(in);
+                back.setVisibility(View.VISIBLE);
+                modal.setVisibility(View.VISIBLE);
+                fab.setVisibility(View.INVISIBLE);
+                friends.setVisibility(View.INVISIBLE);
+
             }
         });
 
-        Button Friends = (Button) findViewById(R.id.Friends);
-        Friends.setOnClickListener(new View.OnClickListener() {
+        friends.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent in = new Intent(view.getContext(), AmigosActivity.class);
                 startActivity(in);
             }
         });
+
+        crear = (ImageButton) findViewById(R.id.crearRecorridoBtn);
+        crear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(getBaseContext(), NuevoRecorridoInicioActivity.class);
+                startActivity(in);
+            }
+        });
+        imageView6 = (ImageButton) findViewById(R.id.imageView6);
+        imageView6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(getBaseContext(), VerRecorridoActivity.class);
+                startActivity(in);
+            }
+        });
+
+
         /*DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -204,15 +250,20 @@ public class MapsActivity extends FragmentActivity
             return true;
         }
         */
-    private void buscarDireccion() {
-        String addressString = "";//texto.getText().toString();
+    private void buscarDireccion(String addressString) {
         if (!addressString.isEmpty()) {
             try {
-                List<Address> addresses = geo.getFromLocationName(addressString, 2);
+                List<Address> addresses = geo.getFromLocationName(
+                        addressString, 2,
+                        lowerLeftLatitude,
+                        lowerLeftLongitude,
+                        upperRightLatitude,
+                        upperRigthLongitude);
                 if (addresses != null && !addresses.isEmpty()) {
                     android.location.Address addressResult = addresses.get(0);
                     LatLng position = new LatLng(addressResult.getLatitude(), addressResult.getLongitude());
                     if (mMap != null) {
+                        mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
                     }
                 } else {
