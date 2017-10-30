@@ -13,11 +13,18 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -54,12 +61,14 @@ import com.google.firebase.auth.FirebaseAuth;
 //import com.pujhones.bicita.Manifest;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigInfo;
 import com.pujhones.bicita.R;
+import com.pujhones.bicita.model.CustomDrawerButton;
 
 import java.util.List;
 import java.util.jar.Manifest;
 
 public class MapsActivity extends FragmentActivity
-        implements OnMapReadyCallback {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        OnMapReadyCallback {
 
     public static final double lowerLeftLatitude = 4.484987;
     public static final double lowerLeftLongitude= -74.212539;
@@ -78,6 +87,7 @@ public class MapsActivity extends FragmentActivity
     LinearLayout modal;
     ImageButton crear;
     ImageButton imageView6;
+    CustomDrawerButton customDrawerButton;
 
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationRequest mLocationRequest;
@@ -143,8 +153,6 @@ public class MapsActivity extends FragmentActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent in = new Intent(view.getContext(), IniciarRecorridoActivity.class);
-                //startActivity(in);
                 back.setVisibility(View.VISIBLE);
                 modal.setVisibility(View.VISIBLE);
                 fab.setVisibility(View.INVISIBLE);
@@ -179,85 +187,94 @@ public class MapsActivity extends FragmentActivity
         });
 
 
-        /*DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        //ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        //        this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        //drawer.setDrawerListener(toggle);
+        //toggle.syncState();
+        customDrawerButton = (CustomDrawerButton) findViewById(R.id.btnOpenDrawer);
+        customDrawerButton.setDrawerLayout( drawer );
+        customDrawerButton.getDrawerLayout().addDrawerListener( customDrawerButton );
+        customDrawerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customDrawerButton.changeState();
+            }
+        });
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);*/
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
-    /*
-        @Override
-        public void onBackPressed() {
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            if (drawer.isDrawerOpen(GravityCompat.START)) {
-                drawer.closeDrawer(GravityCompat.START);
-            } else {
-                super.onBackPressed();
-            }
-        }
 
-        @Override
-        public boolean onCreateOptionsMenu(Menu menu) {
-            // Inflate the menu; this adds items to the action bar if it is present.
-            getMenuInflater().inflate(R.menu.maps, menu);
-            return true;
-        }
-
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.cerrar_sesion:
-                    mAuth.signOut();
-                    Intent in = new Intent(getBaseContext(), LoginActivity.class);
-                    startActivity(in);
-                    Toast.makeText(getBaseContext(), "entroooooo", Toast.LENGTH_SHORT).show();
-                    return true;
-                case 2: //cONFIGURACIÓN
-                    return true;
-                default:
-                    return super.onOptionsItemSelected(item);
-            }
-        }
-
-        @SuppressWarnings("StatementWithEmptyBody")
-        //@Override//-----------------------------------PONER
-        public boolean onNavigationItemSelected(MenuItem item) {
-            // Handle navigation view item clicks here.
-            int id = item.getItemId();
-
-            if (id == R.id.nav_camera) {
-                Intent intent = new Intent(this, CrearRecorridoActivity.class);
-                startActivity(intent);
-            } else if (id == R.id.nav_gallery) {
-                Intent intentt = new Intent(this, NuevoRecorridoInicioActivity.class);
-                startActivity(intentt);
-
-            } else if (id == R.id.nav_slideshow) {
-                Intent intent= new Intent(this, VerAmigoActivity.class);
-                startActivity(intent);
-            } else if (id == R.id.nav_manage) {
-                Intent intent= new Intent(this, VerAmigoActivity.class);
-                startActivity(intent);
-            } else if (id == R.id.nav_verrecorridos) {
-                Intent intent= new Intent(this, VerRecorridoActivity.class);
-                startActivity(intent);
-            } else if (id == R.id.nav_share) {
-                Intent intent = new Intent(this,PerfilPropioActivity.class);
-                startActivity(intent);
-            } else if (id == R.id.promo) {
-                Intent intent = new Intent(this,Promocion.class);
-                startActivity(intent);
-            }
-
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-            return true;
+        } else {
+            super.onBackPressed();
         }
-        */
+    }
+
+    //TENIA UN OVERRIDE---------------------------------------------------------------------------------------------#
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.maps, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.cerrar_sesion:
+                mAuth.signOut();
+                Intent in = new Intent(getBaseContext(), LoginActivity.class);
+                startActivity(in);
+                Toast.makeText(getBaseContext(), "entroooooo", Toast.LENGTH_SHORT).show();
+                return true;
+            case 2: //cONFIGURACIÓN
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    //TENIA UN OVERRIDE---------------------------------------------------------------------------------------------#
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_camera) {
+            Intent intent = new Intent(this, CrearRecorridoActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_gallery) {
+            Intent intentt = new Intent(this, NuevoRecorridoInicioActivity.class);
+            startActivity(intentt);
+
+        } else if (id == R.id.nav_slideshow) {
+            Intent intent= new Intent(this, VerAmigoActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_manage) {
+            Intent intent= new Intent(this, VerAmigoActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_verrecorridos) {
+            Intent intent= new Intent(this, VerRecorridoActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_share) {
+            Intent intent = new Intent(this,PerfilPropioActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.promo) {
+            Intent intent = new Intent(this,Promocion.class);
+            startActivity(intent);
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+    //---------------------------------------------------------------------------------------------------DRAWER
     private void buscarDireccion(String addressString) {
         if (!addressString.isEmpty()) {
             try {
@@ -416,10 +433,10 @@ public class MapsActivity extends FragmentActivity
                 int statusCode =	((ApiException)	e).getStatusCode();
                 switch	(statusCode)	{
                     case	CommonStatusCodes.RESOLUTION_REQUIRED:
-//	Location	settings	are	not	satisfied,	but	this	can	be	fixed	by	showing	the	user	a	dialog.
+                        //	Location	settings	are	not	satisfied,	but	this	can	be	fixed	by	showing	the	user	a	dialog.
                         break;
                     case	LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE:
-//	Location	settings	are	not	satisfied.	No	way	to	fix	the	settings	so	we	won't	show	the	dialog.
+                        //	Location	settings	are	not	satisfied.	No	way	to	fix	the	settings	so	we	won't	show	the	dialog.
                         break;
                 }
             }

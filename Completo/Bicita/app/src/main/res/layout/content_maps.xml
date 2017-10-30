@@ -18,15 +18,21 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_margin="8dp"
+        android:background="@color/colorWhite"
         tools:layout_editor_absoluteY="0dp"
         tools:layout_editor_absoluteX="8dp">
+        <com.pujhones.bicita.model.CustomDrawerButton
+            android:layout_width="42dp"
+            android:layout_height="match_parent"
+            android:id="@+id/btnOpenDrawer"
+            android:background="@drawable/ic_menu_black_24dp"/>
         <SearchView
             android:id="@+id/search"
             android:layout_width="match_parent"
             android:iconifiedByDefault="false"
             android:queryHint="Buscar"
             android:layout_height="50dp"
-            android:background="@color/colorWhite"
+
             android:visibility="visible"/>
     </LinearLayout>
     <Button
