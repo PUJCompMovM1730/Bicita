@@ -15,7 +15,7 @@
       "puntaje" : <Puntos> -> number,
       "sexo" : <Sexo> -> string
     },
-    <UID2> : {
+    <UID> : {
       "altura" : <Altura> -> number,
       "correo" : <CorreoElectronico> -> string,
       "nombre" : <NombreBiciUsuario> -> string,
@@ -24,7 +24,7 @@
       "puntaje" : <Puntos> -> number,
       "sexo" : <Sexo> -> string
     },
-    <UIDN> : {
+    <UID> : {
       "altura" : <Altura> -> number,
       "correo" : <CorreoElectronico> -> string,
       "nombre" : <NombreBiciUsuario> -> string,
@@ -34,6 +34,31 @@
       "sexo" : <Sexo> -> string
     }
   },
+  "chats" : [ {
+    "destino" : <UID> -> string,
+    "mensajes" : [ {
+      "autor" : <UID> -> string,
+      "contenido" : <contenido> -> string,
+      "fecha" : <fecha> -> Date
+    }, {
+      "autor" : <UID>,
+      "contenido" : <contenido> -> string,
+      "fecha" : <fecha> -> Date
+    } ],
+    "origen" : <UID>
+  }, {
+    "destino" : <UID> -> string,
+    "mensajes" : [ {
+      "autor" : <UID> -> string,
+      "contenido" : <contenido> -> string,
+      "fecha" : <fecha> -> Date
+    }, {
+      "autor" : <UID> -> string,
+      "contenido" : <contenido> -> string,
+      "fecha" : <fecha> -> Date
+    } ],
+    "origen" : <UID>
+  } ],
   "recorridos" : [ {
     "acompanantes" : [ <UID> -> string, <UID> -> string, <UID> -> string ],
     "camino" : [ {
