@@ -1,48 +1,28 @@
 package com.pujhones.bicita.view;
 
 import android.Manifest;
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
-
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-
-import android.os.Build;
-import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.nearby.connection.Strategy;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -62,14 +42,8 @@ import com.pujhones.bicita.model.BiciUsuario;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
@@ -200,24 +174,16 @@ public class RegistrarseActivity extends AppCompatActivity implements AdapterVie
                                                 }
                                             });
 
-                                            boolean sexo;
-                                            if (gen.getSelectedItem().equals("Masculino")) {
-                                                sexo = true;
-                                            } else {
-                                                sexo = false;
-                                            }
-
-                                            BiciUsuario bu = new BiciUsuario(Double.parseDouble(altura.getText().toString()),
-                                                    Double.parseDouble(peso.getText().toString()),
-                                                    nombre.getText().toString(),
-                                                    correo.getText().toString(),
-                                                    sexo, urlPath);
-                                            Map<String, String> amigos = new HashMap<String, String>();
-                                            amigos.put(nombre.getText().toString(), user.getUid());
-                                            bu.setAmigos(amigos);
-                                            Map<String, String> recorridos = new HashMap<String, String>();
-                                            recorridos.put("Recorrido1", "id1");
-                                            bu.setRecorridosDondeAcompania(recorridos);
+                                            BiciUsuario bu = new BiciUsuario(
+                                                mAuth.getCurrentUser().getUid(),
+                                                Double.parseDouble(altura.getText().toString()),
+                                                Double.parseDouble(peso.getText().toString()),
+                                                nombre.getText().toString(),
+                                                correo.getText().toString(),
+                                                0.0,
+                                                gen.getSelectedItem().toString(),
+                                                urlPath
+                                            );
                                             myRef = database.getReference(PATH_BICIUSUARIOS + user.getUid());
                                             myRef.setValue(bu);
                                             Toast.makeText(RegistrarseActivity.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
