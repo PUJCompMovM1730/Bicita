@@ -2,8 +2,8 @@ package com.pujhones.bicita.view;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,9 +25,7 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class AgregarAmigoBuscarActivity extends AppCompatActivity {
-
-    Button solicitudes;
+public class AgregarAmigoSolicitudesFragment extends Fragment {
 
     static class ElementoListaViewHolder {
         TextView nombre;
@@ -50,7 +48,7 @@ public class AgregarAmigoBuscarActivity extends AppCompatActivity {
             AmigosActivity.ElementoListaViewHolder holder = new AmigosActivity.ElementoListaViewHolder();
 
             //creating LayoutInflator for inflating the row layout.
-            LayoutInflater inflator = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflator = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             //inflating the row layout we defined earlier.
             convertView = inflator.inflate(R.layout.elemento_lista_amigo, null);
@@ -72,13 +70,21 @@ public class AgregarAmigoBuscarActivity extends AppCompatActivity {
     ArrayList<ElementoListaAmigo> amigos = new ArrayList<>();
 
     ListView lstAmigos;
+    Button buscar;
 
     @Override
-    protected void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_agregar_amigo_buscar);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_agregar_amigo_solicitudes, container, false);
+    }
 
-        lstAmigos = (ListView) findViewById(R.id.lstAmigos);
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        View v = getView();
+
+        lstAmigos = (ListView) v.findViewById(R.id.lstAmigos);
 
         JSONObject json = null;
         try {
@@ -100,10 +106,8 @@ public class AgregarAmigoBuscarActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        AgregarAmigoBuscarActivity.CustomArrayAdapter dataAdapter = new AgregarAmigoBuscarActivity.CustomArrayAdapter(this, R.id.txtNombre, amigos);
+        AgregarAmigoSolicitudesFragment.CustomArrayAdapter dataAdapter = new AgregarAmigoSolicitudesFragment.CustomArrayAdapter(getActivity(), R.id.txtNombre, amigos);
         lstAmigos.setAdapter(dataAdapter);
-
-
         lstAmigos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -111,23 +115,14 @@ public class AgregarAmigoBuscarActivity extends AppCompatActivity {
                 startActivity(in);
             }
         });
-        solicitudes = (Button) findViewById(R.id.solicitudesBtn);
 
-        solicitudes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getBaseContext(), AgregarAmigoSolicitudesActivity.class);
-                startActivity(i);
-            }
-        });
-
-        setTitle("Amigos");
+        getActivity().setTitle("Amigos");
     }
 
     public String loadJSONFromAsset() {
         String json = null;
         try {
-            InputStream is = this.getAssets().open("amigos.json");
+            InputStream is = getActivity().getAssets().open("amigos.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
