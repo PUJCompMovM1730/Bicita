@@ -1,20 +1,24 @@
 package com.pujhones.bicita.model;
 
-import android.media.Image;
-
-import org.w3c.dom.Text;
-
 /**
  * Created by davl3232 on 8/29/17.
  */
 
 public class ElementoListaAmigo {
     String nombre;
-    String imagenPerfilR;
+    String photoURL;
 
-    public ElementoListaAmigo(String nombre, String imagenPerfilR) {
+    public ElementoListaAmigo(String nombre, String photoURL) {
         this.nombre = nombre;
-        this.imagenPerfilR = imagenPerfilR;
+        this.photoURL = photoURL;
+    }
+
+    @Override
+    public String toString() {
+        return "ElementoListaAmigo{" +
+                "nombre='" + nombre + '\'' +
+                ", photoURL='" + photoURL + '\'' +
+                '}';
     }
 
     public String getNombre() {
@@ -25,11 +29,11 @@ public class ElementoListaAmigo {
         this.nombre = nombre;
     }
 
-    public String getImagenPerfilR() {
-        return imagenPerfilR;
+    public String getPhotoURL() {
+        return photoURL;
     }
 
-    public void setImagenPerfilR(String imagenPerfilR) {
-        this.imagenPerfilR = imagenPerfilR;
+    public void setPhotoURL(String photoURL) {
+        this.photoURL = photoURL;
     }
 }

@@ -1,35 +1,54 @@
 package com.pujhones.bicita.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Created by Henry Salazar on 26/10/2017.
  */
 
 public class BiciUsuario {
+    private String uid;
     private double altura;
     private double peso;
     private String nombre;
     private String correo;
-    private Map<String, String> amigos;
     private double puntaje;
-    private Map<String, String> recorridosDondeAcompania;
-    private boolean sexo;
+    private String sexo;
     private String photoURL;
 
-    public BiciUsuario(double altura, double peso, String nombre, String correo, boolean sexo, String url) {
+    public BiciUsuario() {
+    }
+
+    public BiciUsuario(String uid, double altura, double peso, String nombre, String correo,
+                       double puntaje, String sexo, String photoURL) {
+        this.uid = uid;
         this.altura = altura;
         this.peso = peso;
         this.nombre = nombre;
         this.correo = correo;
-        this.amigos = new HashMap<String, String>();
-        this.puntaje = 0.0;
-        this.recorridosDondeAcompania = new HashMap<String, String>();
+        this.puntaje = puntaje;
         this.sexo = sexo;
-        this.photoURL = url;
+        this.photoURL = photoURL;
+    }
+
+    @Override
+    public String toString() {
+        return "BiciUsuario{" +
+                "uid='" + uid + '\'' +
+                ", altura=" + altura +
+                ", peso=" + peso +
+                ", nombre='" + nombre + '\'' +
+                ", correo='" + correo + '\'' +
+                ", puntaje=" + puntaje +
+                ", sexo='" + sexo + '\'' +
+                ", photoURL='" + photoURL + '\'' +
+                '}';
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public double getAltura() {
@@ -64,14 +83,6 @@ public class BiciUsuario {
         this.correo = correo;
     }
 
-    public Map<String, String> getAmigos() {
-        return amigos;
-    }
-
-    public void setAmigos(Map<String, String> amigos) {
-        this.amigos = amigos;
-    }
-
     public double getPuntaje() {
         return puntaje;
     }
@@ -80,19 +91,11 @@ public class BiciUsuario {
         this.puntaje = puntaje;
     }
 
-    public Map<String, String> getRecorridosDondeAcompania() {
-        return recorridosDondeAcompania;
-    }
-
-    public void setRecorridosDondeAcompania(Map<String, String> recorridosDondeAcompania) {
-        this.recorridosDondeAcompania = recorridosDondeAcompania;
-    }
-
-    public boolean isSexo() {
+    public String getSexo() {
         return sexo;
     }
 
-    public void setSexo(boolean sexo) {
+    public void setSexo(String sexo) {
         this.sexo = sexo;
     }
 
