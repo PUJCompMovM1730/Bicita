@@ -60,6 +60,10 @@
     "origen" : <UID>
   } ],
   "recorridos" : [ {
+    "CicloRutaEmpresa" : {
+      "promocionado" : <EstaPromocionado?> -> boolean,
+      "empresa" : <EmpresaUID> -> string
+    },
     "acompanantes" : [ <UID> -> string, <UID> -> string, <UID> -> string ],
     "camino" : [ {
       "lat" : <Latitud> -> number,
@@ -81,5 +85,72 @@
       "lat" : <Latitud> -> number,
       "long" : <Longitud> -> string
     }
-  } ]
+  } , {
+    "acompanantes" : [ <UID> -> string, <UID> -> string, <UID> -> string ],
+    "camino" : [ {
+      "lat" : <Latitud> -> number,
+      "long" : <Longitud> -> number
+    }, {
+      "lat" : <Latitud> -> number,
+      "long" : <Longitud> -> number
+    }, {
+      "lat" : <Latitud> -> number,
+      "long" : <Longitud> -> number
+    }
+  ],
+    "creador" : <UID -> string>,
+    "fin" : {
+      "lat" : <Latitud> -> number,
+      "long" : <Longitud> -> number
+    },
+    "inicio" : {
+      "lat" : <Latitud> -> number,
+      "long" : <Longitud> -> string
+    }
+  } ],
+  "empresas" : {
+    <UID> : {
+      "NIT" : <NIT> -> string,
+      "nombre" : <NombreBiciUsuario> -> string,
+      "razonSocial" : <razonSocial> -> string,
+      "photoURL" : <URLFotoDePerfil> -> string
+    },
+    <UID> : {
+      "NIT" : <NIT> -> string,
+      "nombre" : <NombreBiciUsuario> -> string,
+      "razonSocial" : <razonSocial> -> string,
+      "photoURL" : <URLFotoDePerfil> -> string
+    },
+    <UID> : {
+      "NIT" : <NIT> -> string,
+      "nombre" : <NombreBiciUsuario> -> string,
+      "razonSocial" : <razonSocial> -> string,
+      "photoURL" : <URLFotoDePerfil> -> string
+    }
+  },
+  "lugares" : [ {
+    "categoria" : <categoria> -> string,
+    "descripcion" : <descripcion> -> string,
+    "empresa" : <EmpresaUID> -> string,
+    "fechaVencimiento" : <fechaVencimiento> -> Date,
+    "nombre" : <nombre> -> string,
+    "promocionado" : <estaPromocionado?> -> boolean,
+    "ubicacion" : {
+      "lat" : <Latitud> -> number,
+      "long" : <Longitud> -> number
+    }
+  } , {
+    "categoria" : <categoria> -> string,
+    "descripcion" : <descripcion> -> string,
+    "empresa" : <EmpresaUID> -> string,
+    "fechaVencimiento" : <fechaVencimiento> -> Date,
+    "nombre" : <nombre> -> string,
+    "promocionado" : <estaPromocionado?> -> boolean,
+    "ubicacion" : {
+      "lat" : <Latitud> -> number,
+      "long" : <Longitud> -> number
+    }
+  }
+]
+  }
 }

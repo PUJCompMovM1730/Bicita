@@ -6,12 +6,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -28,8 +30,16 @@ import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -37,6 +47,7 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -44,9 +55,12 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -54,11 +68,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.pujhones.bicita.R;
 import com.pujhones.bicita.model.CustomDrawerButton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MapsActivity extends FragmentActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        OnMapReadyCallback {
+        OnMapReadyCallback{
 
     public static final double lowerLeftLatitude = 4.484987;
     public static final double lowerLeftLongitude= -74.212539;
@@ -67,12 +82,22 @@ public class MapsActivity extends FragmentActivity
 
     private static final int REQUEST_CHECK_SETTINGS = 2;
     public	final	static	double	RADIUS_OF_EARTH_KM	 =	6371;
+    private static final String TAG = "This TAG";
 
     private GoogleMap mMap;
     Button fab;
     Button friends;
     Geocoder geo;
+    Marker bogotaBike;
     SearchView texto;
+
+    SearchView search_recorrido_inicio_1;
+    SearchView search_recorrido_fin_2;
+    Marker mIni;
+    Marker mFin;
+    LatLng ini;
+    LatLng fin;
+
     Button back;
     LinearLayout modal;
     ImageButton crear;
@@ -123,6 +148,47 @@ public class MapsActivity extends FragmentActivity
             }
         });
 
+        search_recorrido_inicio_1 = (SearchView) findViewById(R.id.search_recorrido_inicio_1);
+        search_recorrido_fin_2 = (SearchView) findViewById(R.id.search_recorrido_fin_2);
+        search_recorrido_inicio_1.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                LatLng encontrado = buscarDireccion(s);
+                if (encontrado!=null)
+                {
+                    if (mIni!=null)
+                        mIni.remove();
+                    mIni = mMap.addMarker(new MarkerOptions().position(encontrado)
+                            .title("Inicio").snippet(s));
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+        search_recorrido_fin_2.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                LatLng encontrado = buscarDireccion(s);
+                if (encontrado!=null)
+                {
+                    if (mFin!=null)
+                        mFin.remove();
+                    mIni = mMap.addMarker(new MarkerOptions().position(encontrado)
+                            .title("Fin").snippet(s));
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+
         mLocationCallback =	new	LocationCallback()	 {
             @Override
             public	void	onLocationResult(LocationResult locationResult)	 {
@@ -134,9 +200,11 @@ public class MapsActivity extends FragmentActivity
                     lon=location.getLongitude();
                     if (mMap!=null)
                     {
-                        //focused=false;
-                        mMap.clear();
-                        Marker bogotaBike = mMap.addMarker(new MarkerOptions().position(new LatLng(lat,lon))
+                        focused=false;
+                        //mMap.clear();
+                        if (bogotaBike!=null)
+                            bogotaBike.remove();
+                        bogotaBike = mMap.addMarker(new MarkerOptions().position(new LatLng(lat,lon))
                                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.bike)).title("Marcador actual").snippet("Ubicacion"));
                         if (focused)
                         {
@@ -177,8 +245,13 @@ public class MapsActivity extends FragmentActivity
         crear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent in = new Intent(getBaseContext(), NuevoRecorridoInicioActivity.class);
-                startActivity(in);
+                //Intent in = new Intent(getBaseContext(), NuevoRecorridoInicioActivity.class);
+                //startActivity(in);
+                back.setVisibility(View.INVISIBLE);
+                modal.setVisibility(View.INVISIBLE);
+                fab.setVisibility(View.VISIBLE);
+                friends.setVisibility(View.VISIBLE);
+                ruta(new LatLng(4.632594, -74.067799),new LatLng(4.624039, -74.078785));
             }
         });
         imageView6 = (ImageButton) findViewById(R.id.imageView6);
@@ -205,7 +278,6 @@ public class MapsActivity extends FragmentActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
-
 
     @Override
     public void onBackPressed() {
@@ -279,7 +351,7 @@ public class MapsActivity extends FragmentActivity
         return true;
     }
     //---------------------------------------------------------------------------------------------------DRAWER
-    private void buscarDireccion(String addressString) {
+    private LatLng buscarDireccion(String addressString) {
         if (!addressString.isEmpty()) {
             try {
                 List<Address> addresses = geo.getFromLocationName(
@@ -292,9 +364,11 @@ public class MapsActivity extends FragmentActivity
                     android.location.Address addressResult = addresses.get(0);
                     LatLng position = new LatLng(addressResult.getLatitude(), addressResult.getLongitude());
                     if (mMap != null) {
+
                         mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
                         mMap.moveCamera(CameraUpdateFactory.newLatLng(position));
                     }
+                    return position;
                 } else {
                     Toast.makeText(MapsActivity.this, "Dirección no encontrada", Toast.LENGTH_SHORT).show();
                 }
@@ -304,6 +378,7 @@ public class MapsActivity extends FragmentActivity
         } else {
             Toast.makeText(MapsActivity.this, "La dirección esta vacía", Toast.LENGTH_SHORT).show();
         }
+        return null;
     }
 
 
@@ -334,7 +409,7 @@ public class MapsActivity extends FragmentActivity
         Marker marcador2 = mMap.addMarker(new MarkerOptions().position(bogota).title("GRAN ESTACIÓN")
                 .snippet("Esta es una prueba")//Texto de información
                 .alpha(0.5f));
-        Marker bogotaBike = mMap.addMarker(new MarkerOptions().position(bogota)
+        bogotaBike = mMap.addMarker(new MarkerOptions().position(bogota)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.bike)).title("Marcador actual").snippet("Ubicacion"));
         marcador1.setVisible(false);
         marcador2.setVisible(false);
@@ -446,8 +521,8 @@ public class MapsActivity extends FragmentActivity
                 }
             }
         });
-        
-        
+
+
         mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new
                 OnSuccessListener<Location>() {
                     @Override
@@ -462,7 +537,7 @@ public class MapsActivity extends FragmentActivity
                                 if (mMap!=null)
                                 {
                                     mMap.clear();
-                                    Marker bogotaBike = mMap.addMarker(new MarkerOptions().position(new LatLng(lat,lon))
+                                    bogotaBike = mMap.addMarker(new MarkerOptions().position(new LatLng(lat,lon))
                                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.bike)).title("Marcador actual").snippet("Ubicacion"));
                                     mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(lat,lon)));
                                     mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
@@ -491,4 +566,117 @@ public class MapsActivity extends FragmentActivity
         double	result	=	RADIUS_OF_EARTH_KM	 *	c;
         return	Math.round(result*100.0)/100.0;
     }
+
+    public void ruta(LatLng latLngIni,LatLng latLngFin) {
+        //use Google Direction API to get the route between these Locations
+        String directionApiPath = Helper.getUrl(String.valueOf(latLngIni.latitude), String.valueOf(latLngIni.longitude),
+                String.valueOf(latLngFin.latitude), String.valueOf(latLngFin.longitude));
+        Log.d(TAG, "Path " + directionApiPath);
+        getDirectionFromDirectionApiServer(directionApiPath);
+    }
+
+    private void getDirectionFromDirectionApiServer(String url){
+        GsonRequest<DirectionObject> serverRequest = new GsonRequest<DirectionObject>(
+                Request.Method.GET,
+                url,
+                DirectionObject.class,
+                createRequestSuccessListener(),
+                createRequestErrorListener());
+        serverRequest.setRetryPolicy(new DefaultRetryPolicy(
+                Helper.MY_SOCKET_TIMEOUT_MS,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(serverRequest);
+    }
+
+    ////////////////////////////////////////////////////////////////
+
+
+    private Response.Listener<DirectionObject> createRequestSuccessListener() {
+        return new Response.Listener<DirectionObject>() {
+            @Override
+            public void onResponse(DirectionObject response) {
+                try {
+                    Log.d("JSON Response", response.toString());
+                    if(response.getStatus().equals("OK")){
+                        List<LatLng> mDirections = getDirectionPolylines(response.getRoutes());
+                        drawRouteOnMap(mMap, mDirections);
+                    }else{
+                        Toast.makeText(MapsActivity.this, R.string.server_error, Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            };
+        };
+    }
+    private List<LatLng> getDirectionPolylines(List<RouteObject> routes){
+        List<LatLng> directionList = new ArrayList<LatLng>();
+        for(RouteObject route : routes){
+            List<LegsObject> legs = route.getLegs();
+            for(LegsObject leg : legs){
+                List<StepsObject> steps = leg.getSteps();
+                for(StepsObject step : steps){
+                    PolylineObject polyline = step.getPolyline();
+                    String points = polyline.getPoints();
+                    List<LatLng> singlePolyline = decodePoly(points);
+                    for (LatLng direction : singlePolyline){
+                        directionList.add(direction);
+                    }
+                }
+            }
+        }
+        return directionList;
+    }
+    private Response.ErrorListener createRequestErrorListener() {
+        return new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        };
+    }
+    private void drawRouteOnMap(GoogleMap map, List<LatLng> positions){
+        PolylineOptions options = new PolylineOptions().width(5).color(Color.BLUE).geodesic(true);
+        options.addAll(positions);
+        Polyline polyline = map.addPolyline(options);
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(new LatLng(positions.get(1).latitude, positions.get(1).longitude))
+                .zoom(17)
+                .build();
+        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+    }
+    /**
+     * Method to decode polyline points
+     * Courtesy : http://jeffreysambells.com/2010/05/27/decoding-polylines-from-google-maps-direction-api-with-java
+     * */
+    private List<LatLng> decodePoly(String encoded) {
+        List<LatLng> poly = new ArrayList<>();
+        int index = 0, len = encoded.length();
+        int lat = 0, lng = 0;
+        while (index < len) {
+            int b, shift = 0, result = 0;
+            do {
+                b = encoded.charAt(index++) - 63;
+                result |= (b & 0x1f) << shift;
+                shift += 5;
+            } while (b >= 0x20);
+            int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+            lat += dlat;
+            shift = 0;
+            result = 0;
+            do {
+                b = encoded.charAt(index++) - 63;
+                result |= (b & 0x1f) << shift;
+                shift += 5;
+            } while (b >= 0x20);
+            int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+            lng += dlng;
+            LatLng p = new LatLng((((double) lat / 1E5)),
+                    (((double) lng / 1E5)));
+            poly.add(p);
+        }
+        return poly;
+    }
+
 }
