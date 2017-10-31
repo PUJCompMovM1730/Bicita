@@ -151,7 +151,6 @@ public class RegistrarseActivity extends AppCompatActivity implements AdapterVie
                                             String urlPath = PATH_STORAGE_FOTOSPRFIL + "URL::" + user.getUid() + ".jpg";
                                             StorageReference url = storageRef.child(urlPath);
 
-
                                             // Get the data from an ImageView as bytes
                                             cam.setDrawingCacheEnabled(true);
                                             cam.buildDrawingCache();
@@ -171,25 +170,29 @@ public class RegistrarseActivity extends AppCompatActivity implements AdapterVie
                                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                                                     // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                                                     Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                                                    String fullURL = "";
+                                                    if (downloadUrl != null) {
+                                                        fullURL = downloadUrl.toString();
+                                                    }
+                                                    Log.i(TAG, fullURL);
+                                                    BiciUsuario bu = new BiciUsuario(
+                                                            mAuth.getCurrentUser().getUid(),
+                                                            Double.parseDouble(altura.getText().toString()),
+                                                            Double.parseDouble(peso.getText().toString()),
+                                                            nombre.getText().toString(),
+                                                            correo.getText().toString(),
+                                                            0.0,
+                                                            gen.getSelectedItem().toString(),
+                                                            fullURL
+                                                    );
+
+                                                    myRef = database.getReference(PATH_BICIUSUARIOS + FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                                    myRef.setValue(bu);
+
+                                                    Toast.makeText(RegistrarseActivity.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
+                                                    startActivity(new Intent(RegistrarseActivity.this, MapsActivity.class));
                                                 }
                                             });
-
-                                            BiciUsuario bu = new BiciUsuario(
-                                                mAuth.getCurrentUser().getUid(),
-                                                Double.parseDouble(altura.getText().toString()),
-                                                Double.parseDouble(peso.getText().toString()),
-                                                nombre.getText().toString(),
-                                                correo.getText().toString(),
-                                                0.0,
-                                                gen.getSelectedItem().toString(),
-                                                urlPath
-                                            );
-                                            myRef = database.getReference(PATH_BICIUSUARIOS + user.getUid());
-                                            myRef.setValue(bu);
-                                            Toast.makeText(RegistrarseActivity.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
-
-                                            startActivity(new Intent(RegistrarseActivity.this, MapsActivity.class));
-
                                         }
                                     }
                                     if (!task.isSuccessful()) {
