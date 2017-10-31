@@ -78,13 +78,10 @@ public class MapsActivity extends FragmentActivity
     ImageButton crear;
     ImageButton imageView6;
     CustomDrawerButton customDrawerButton;
-    Double lat=4.626925;
-    Double lon=-74.063905;
 
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationRequest mLocationRequest;
     private LocationCallback mLocationCallback;
-    boolean focused;
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
@@ -129,21 +126,7 @@ public class MapsActivity extends FragmentActivity
                 Location	location	=	locationResult.getLastLocation();
                 Log.i("LOCATION",	"Location	update	in	the	callback:	"	+	location);
                 if	(location	 !=	null)	{
-                    //ACA SE OBTIENEN LOS DATOS----------------------------------------------------------########################################
-                    lat=location.getLatitude();
-                    lon=location.getLongitude();
-                    if (mMap!=null)
-                    {
-                        //focused=false;
-                        mMap.clear();
-                        Marker bogotaBike = mMap.addMarker(new MarkerOptions().position(new LatLng(lat,lon))
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.bike)).title("Marcador actual").snippet("Ubicacion"));
-                        if (focused)
-                        {
-                            mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(lat,lon)));
-                            mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
-                        }
-                    }
+                    //ACA SE OBTIENEN LOS DATOS----------------------------------------------------------
                 }
             }
         };
@@ -231,6 +214,7 @@ public class MapsActivity extends FragmentActivity
                 mAuth.signOut();
                 Intent in = new Intent(getBaseContext(), LoginActivity.class);
                 startActivity(in);
+                Toast.makeText(getBaseContext(), "entroooooo", Toast.LENGTH_SHORT).show();
                 return true;
             case 2: //cONFIGURACIÓN
                 return true;
@@ -271,7 +255,7 @@ public class MapsActivity extends FragmentActivity
             mAuth.signOut();
             Intent in = new Intent(getBaseContext(), LoginActivity.class);
             startActivity(in);
-            //Toast.makeText(getBaseContext(), "entroooooo", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(), "entroooooo", Toast.LENGTH_SHORT).show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -309,7 +293,7 @@ public class MapsActivity extends FragmentActivity
 
     protected	LocationRequest createLocationRequest()	 {
         LocationRequest mLocationRequest =	new	LocationRequest();
-        mLocationRequest.setInterval(1000);	 //tasa de	refresco en	milisegundos
+        mLocationRequest.setInterval(10000);	 //tasa de	refresco en	milisegundos
         mLocationRequest.setFastestInterval(5000);	 //máxima tasa de	refresco
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         return	mLocationRequest;
@@ -329,7 +313,7 @@ public class MapsActivity extends FragmentActivity
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng bogota = new LatLng(lat, lon);
+        LatLng bogota = new LatLng(4.6476286, -74.1038169);
         Marker marcador1 = mMap.addMarker(new MarkerOptions().position(bogota).title("Marcador en Gran estacion"));
         Marker marcador2 = mMap.addMarker(new MarkerOptions().position(bogota).title("GRAN ESTACIÓN")
                 .snippet("Esta es una prueba")//Texto de información
@@ -338,18 +322,16 @@ public class MapsActivity extends FragmentActivity
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.bike)).title("Marcador actual").snippet("Ubicacion"));
         marcador1.setVisible(false);
         marcador2.setVisible(false);
-        //bogotaBike.setVisible(false);
-        mMap.getUiSettings().setZoomGesturesEnabled(true);
-        mMap.getUiSettings().setCompassEnabled(true);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(bogota));
         //mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.getUiSettings().setZoomGesturesEnabled(true);
+        mMap.getUiSettings().setCompassEnabled(true);
         mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
         //mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.style_json));
     }
 
     @Override
     protected void onStart() {
-        focused=true;
         super.onStart();
 
         solicitar();
@@ -379,7 +361,8 @@ public class MapsActivity extends FragmentActivity
                 ActivityCompat.requestPermissions((Activity) this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             }
         } else {
-            localizar();
+
+            //localizar();
         }
     }
 
@@ -403,10 +386,10 @@ public class MapsActivity extends FragmentActivity
         switch (requestCode) {
             case 1: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    localizar();
+                    //localizar();
                     Log.i("dsadjksjadlsa", "Pruebo todo");
                 } else {
-                    // TODO: Hacer el else
+                    //// TODO: Hacer el else
                 }
                 return;
             }
@@ -454,41 +437,30 @@ public class MapsActivity extends FragmentActivity
                     public void onSuccess(Location location) {
                         Log.i("LOCATION", "onSuccess location");
                         if (location != null) {
-                            lat=location.getLatitude();
-                            lon=location.getLongitude();
-                            if (focused)
-                            {
-                                //focused=false;
-                                if (mMap!=null)
-                                {
-                                    mMap.clear();
-                                    Marker bogotaBike = mMap.addMarker(new MarkerOptions().position(new LatLng(lat,lon))
-                                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.bike)).title("Marcador actual").snippet("Ubicacion"));
-                                    mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(lat,lon)));
-                                    mMap.moveCamera(CameraUpdateFactory.zoomTo(15));
-                                }
-                            }
+                            Log.i("	LOCATION	",
+                                    "Longitud:	 " + location.getLongitude());
+                            Log.i("	LOCATION	",
+                                    "Latitud:	 " + location.getLatitude());
                         }
                     }
                 });
-    }
-
-    private	void	startLocationUpdates()	 {
-        if	(ContextCompat.checkSelfPermission(this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION)	 ==
-                PackageManager.PERMISSION_GRANTED)	 {				//Verificación de	permiso!!
-            mFusedLocationClient.requestLocationUpdates(mLocationRequest,	 mLocationCallback, null);
+        }
+        private	void	startLocationUpdates()	 {
+            if	(ContextCompat.checkSelfPermission(this,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION)	 ==
+                    PackageManager.PERMISSION_GRANTED)	 {				//Verificación de	permiso!!
+                mFusedLocationClient.requestLocationUpdates(mLocationRequest,	 mLocationCallback,
+                        null);
+            }
+        }
+        public	double	distance(double	 lat1,	double	long1,	double	lat2,	double	long2)	{
+            double	latDistance =	Math.toRadians(lat1	 - lat2);
+            double	lngDistance =	Math.toRadians(long1	 - long2);
+            double	a	=	Math.sin(latDistance /	2)	*	Math.sin(latDistance /	2)
+                    +	Math.cos(Math.toRadians(lat1))	 *	Math.cos(Math.toRadians(lat2))
+                    *	Math.sin(lngDistance /	2)	*	Math.sin(lngDistance /	2);
+            double	c	=	2	*	Math.atan2(Math.sqrt(a),	 Math.sqrt(1	- a));
+            double	result	=	RADIUS_OF_EARTH_KM	 *	c;
+            return	Math.round(result*100.0)/100.0;
         }
     }
-
-    public	double	distance(double	 lat1,	double	long1,	double	lat2,	double	long2)	{
-        double	latDistance =	Math.toRadians(lat1	 - lat2);
-        double	lngDistance =	Math.toRadians(long1	 - long2);
-        double	a	=	Math.sin(latDistance /	2)	*	Math.sin(latDistance /	2)
-                +	Math.cos(Math.toRadians(lat1))	 *	Math.cos(Math.toRadians(lat2))
-                *	Math.sin(lngDistance /	2)	*	Math.sin(lngDistance /	2);
-        double	c	=	2	*	Math.atan2(Math.sqrt(a),	 Math.sqrt(1	- a));
-        double	result	=	RADIUS_OF_EARTH_KM	 *	c;
-        return	Math.round(result*100.0)/100.0;
-    }
-}
