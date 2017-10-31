@@ -1,0 +1,60 @@
+{
+  "amistades" : [ {
+    "amigo1" : <UID> -> string,
+    "amigo2" : <UID> -> string,
+    "estado" : <ESTADO> -> string
+    }
+  ],
+  "biciusuarios" : {
+    <UID> : {
+      "altura" : <Altura> -> number,
+      "correo" : <CorreoElectronico> -> string,
+      "nombre" : <NombreBiciUsuario> -> string,
+      "peso" : <Peso> -> number,
+      "photoURL" : <URLFotoDePerfil> -> string,
+      "puntaje" : <Puntos> -> number,
+      "sexo" : <Sexo> -> string
+    },
+    <UID2> : {
+      "altura" : <Altura> -> number,
+      "correo" : <CorreoElectronico> -> string,
+      "nombre" : <NombreBiciUsuario> -> string,
+      "peso" : <floatPeso> -> number,
+      "photoURL" : <URLFotoDePerfil> -> string,
+      "puntaje" : <Puntos> -> number,
+      "sexo" : <Sexo> -> string
+    },
+    <UIDN> : {
+      "altura" : <Altura> -> number,
+      "correo" : <CorreoElectronico> -> string,
+      "nombre" : <NombreBiciUsuario> -> string,
+      "peso" : <Peso> -> number,
+      "photoURL" : <URLFotoDePerfil> -> string,
+      "puntaje" : <Puntos> -> number,
+      "sexo" : <Sexo> -> string
+    }
+  },
+  "recorridos" : [ {
+    "acompanantes" : [ <UID> -> string, <UID> -> string, <UID> -> string ],
+    "camino" : [ {
+      "lat" : <Latitud> -> number,
+      "long" : <Longitud> -> number
+    }, {
+      "lat" : <Latitud> -> number,
+      "long" : <Longitud> -> number
+    }, {
+      "lat" : <Latitud> -> number,
+      "long" : <Longitud> -> number
+    }
+  ],
+    "creador" : <UID -> string>,
+    "fin" : {
+      "lat" : <Latitud> -> number,
+      "long" : <Longitud> -> number
+    },
+    "inicio" : {
+      "lat" : <Latitud> -> number,
+      "long" : <Longitud> -> string
+    }
+  } ]
+}
