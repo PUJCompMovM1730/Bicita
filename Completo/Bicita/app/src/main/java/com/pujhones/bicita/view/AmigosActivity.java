@@ -2,28 +2,30 @@ package com.pujhones.bicita.view;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.pujhones.bicita.R;
+import com.pujhones.bicita.model.BiciUsuario;
 import com.pujhones.bicita.model.ElementoListaAmigo;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -39,18 +41,22 @@ public class AmigosActivity extends AppCompatActivity {
 
         //this custom adapter receives an ArrayList of RowData objects.
         //RowData is my class that represents the data for a single row and could be anything.
-        public CustomArrayAdapter(Context context, int textViewResourceId, ArrayList<ElementoListaAmigo> rowDataList) {
+        public CustomArrayAdapter(Context context, int textViewResourceId,
+                                  ArrayList<ElementoListaAmigo> rowDataList) {
             //populate the local list with data.
             super(context, textViewResourceId, rowDataList);
             this.list = new ArrayList<ElementoListaAmigo>();
             this.list.addAll(rowDataList);
         }
+
         public View getView(final int position, View convertView, ViewGroup parent) {
             //creating the ViewHolder we defined earlier.
-            ElementoListaViewHolder holder = new ElementoListaViewHolder();
+            AmigosActivity.ElementoListaViewHolder holder = new AmigosActivity
+                    .ElementoListaViewHolder();
 
             //creating LayoutInflator for inflating the row layout.
-            LayoutInflater inflator = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflator = (LayoutInflater) this.getContext().getSystemService(Context
+                    .LAYOUT_INFLATER_SERVICE);
 
             //inflating the row layout we defined earlier.
             convertView = inflator.inflate(R.layout.elemento_lista_amigo, null);
@@ -61,7 +67,8 @@ public class AmigosActivity extends AppCompatActivity {
 
             holder.nombre.setText(list.get(position).getNombre());
             Context context = holder.imagenPerfil.getContext();
-            int idImagen = context.getResources().getIdentifier(list.get(position).getImagenPerfilR(), "drawable", context.getPackageName());
+            int idImagen = context.getResources().getIdentifier(list.get(position).getPhotoURL(),
+                    "drawable", context.getPackageName());
             holder.imagenPerfil.setImageResource(idImagen);
 
             //return the row view.
@@ -69,80 +76,107 @@ public class AmigosActivity extends AppCompatActivity {
         }
     }
 
+    protected final String TAG = "BUSCAR";
+
+    protected final String URL_USUARIOS = "biciusuarios/";
+
+    FirebaseDatabase fireDB;
+
     ArrayList<ElementoListaAmigo> amigos = new ArrayList<>();
 
     ListView lstAmigos;
-    ImageButton btnAddFriend;
+    Button buscar;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_amigos);
 
-        lstAmigos = (ListView) findViewById(R.id.lstAmigos);
+        fireDB = FirebaseDatabase.getInstance();
 
-        JSONObject json = null;
-        try {
-            json = new JSONObject(loadJSONFromAsset());
-            JSONArray amigosJsonArray = json.getJSONArray("amigos");
-            amigos = new ArrayList<>();
-            for(int i = 0; i < amigosJsonArray.length(); i++) {
-                JSONObject jsonObject = amigosJsonArray.getJSONObject(i);
-                String nombre = jsonObject.getString("nombre");
-                String imagenPerfilR = jsonObject.getString("imagen_perfil_r");
-                if (nombre == null) {
-                    nombre = "";
-                }
-                if (imagenPerfilR == null) {
-                    imagenPerfilR = "horus";
-                }
-                amigos.add(new ElementoListaAmigo(nombre, imagenPerfilR));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        CustomArrayAdapter dataAdapter = new CustomArrayAdapter(this, R.id.txtNombre, amigos);
-        lstAmigos.setAdapter(dataAdapter);
+        Log.i(TAG, FirebaseAuth.getInstance().getCurrentUser().getUid());
+        Log.i(TAG, FirebaseAuth.getInstance().getCurrentUser().getEmail());
+
+        lstAmigos = (ListView) findViewById(R.id.lstAmigos);
 
         lstAmigos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent in = new Intent(view.getContext(),EliminarAmigoActivity.class);
+                Intent in = new Intent(view.getContext(), VerAmigoActivity.class);
                 startActivity(in);
             }
         });
 
-
-        btnAddFriend = (ImageButton) findViewById(R.id.fab);
-        int color = ResourcesCompat.getColor(getResources(), R.color.icnColor, null);
-        Drawable icn = btnAddFriend.getDrawable();
-        btnAddFriend.setColorFilter(color);
-
-        setTitle("Amigos");
-
-        btnAddFriend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent in = new Intent(view.getContext(), AgregarAmigosActivity.class);
-                startActivity(in);
-            }
-        });
-
+        loadAmigosFromDB();
     }
 
-    public String loadJSONFromAsset() {
-        String json = null;
-        try {
-            InputStream is = this.getAssets().open("amigos.json");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
+    public void loadAmigosFromDB() {
+        Query queryAmigos1 = fireDB.getReference("amistades/").orderByChild("amigo1").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        Query queryAmigos2 = fireDB.getReference("amistades/").orderByChild("amigo2").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        queryAmigos1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                queryBiciUsuariosSnapshot(dataSnapshot, "amigo1");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, ":onCancelled", databaseError.toException());
+                // ...
+            }
+        });
+
+        queryAmigos2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                queryBiciUsuariosSnapshot(dataSnapshot, "amigo2");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, ":onCancelled", databaseError.toException());
+                // ...
+            }
+        });
+    }
+
+    protected void queryBiciUsuariosSnapshot(DataSnapshot dataSnapshot, String amigoFieldName) {
+        Iterator<DataSnapshot> iter = dataSnapshot.getChildren().iterator();
+        amigos = new ArrayList<>();
+        while (iter.hasNext()) {
+            DataSnapshot ds = iter.next();
+            if (ds.child("estado").getValue(String.class).equals("aceptado")) {
+                String uid = ds.child(amigoFieldName).getValue(String.class);
+                Query queryAmigo = fireDB.getReference("biciusuarios/" + uid);
+                Log.i(TAG, uid);
+                queryAmigo.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot2) {
+                        BiciUsuario u = dataSnapshot2.getValue(BiciUsuario.class);
+                        u.setUid(dataSnapshot2.getKey());
+                        amigos.add(new ElementoListaAmigo(u.getNombre(), "horus"));
+                        Log.i(TAG, amigos.toString());
+                        cargarAmigosAVista();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Getting Post failed, log a message
+                        Log.w(TAG, ":onCancelled", databaseError.toException());
+                        // ...
+                    }
+                });
+            }
+
         }
-        return json;
+    }
+
+    protected void cargarAmigosAVista() {
+        AmigosActivity.CustomArrayAdapter dataAdapter = new
+                AmigosActivity.CustomArrayAdapter(getBaseContext(), R.id.txtNombre,
+                amigos);
+        lstAmigos.setAdapter(dataAdapter);
     }
 }

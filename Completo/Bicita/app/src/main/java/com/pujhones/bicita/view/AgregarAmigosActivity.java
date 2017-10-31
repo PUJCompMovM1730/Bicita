@@ -60,6 +60,8 @@ public class AgregarAmigosActivity extends AppCompatActivity {
             }
         });
 
+        setTitle("Agregar Amigos");
+
     }
 
 
