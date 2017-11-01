@@ -56,8 +56,9 @@
         <activity
             android:name=".view.AgregarAmigosActivity"
             android:label="@string/title_activity_agregar_amigos"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".view.ChatActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".view.ChatActivity" />
+        <activity android:name=".view.MensajesActivity"></activity>
     </application>
 
 </manifest>
