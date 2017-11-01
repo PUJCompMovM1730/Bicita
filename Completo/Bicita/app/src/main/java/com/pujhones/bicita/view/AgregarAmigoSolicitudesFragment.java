@@ -2,6 +2,7 @@ package com.pujhones.bicita.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -24,6 +25,9 @@ import com.pujhones.bicita.R;
 import com.pujhones.bicita.model.BiciUsuario;
 import com.pujhones.bicita.model.ElementoListaAmigo;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -67,9 +71,20 @@ public class AgregarAmigoSolicitudesFragment extends Fragment {
 
             holder.nombre.setText(list.get(position).getNombre());
             Context context = holder.imagenPerfil.getContext();
-            int idImagen = context.getResources().getIdentifier(list.get(position).getPhotoURL(),
-                    "drawable", context.getPackageName());
-            holder.imagenPerfil.setImageResource(idImagen);
+
+            Drawable d;
+            InputStream is = null;
+            Log.e(TAG, "Descargando imagen.");
+            try {
+                is = (InputStream) new URL(list.get(position).getPhotoURL()).getContent();
+                d = Drawable.createFromStream(is, null);
+                holder.imagenPerfil.setImageDrawable(d);
+            } catch (IOException e) {
+                Log.e(TAG, e.getMessage());
+                int idImagen = context.getResources().getIdentifier("horus",
+                        "drawable", context.getPackageName());
+                holder.imagenPerfil.setImageResource(idImagen);
+            }
 
             //return the row view.
             return convertView;
@@ -123,7 +138,7 @@ public class AgregarAmigoSolicitudesFragment extends Fragment {
         queryAmigos1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                queryBiciUsuariosSnapshot(dataSnapshot, "amigo1");
+                queryBiciUsuariosSnapshot(dataSnapshot, "amigo2");
             }
 
             @Override
@@ -137,7 +152,7 @@ public class AgregarAmigoSolicitudesFragment extends Fragment {
         queryAmigos2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                queryBiciUsuariosSnapshot(dataSnapshot, "amigo2");
+                queryBiciUsuariosSnapshot(dataSnapshot, "amigo1");
             }
 
             @Override
@@ -163,7 +178,7 @@ public class AgregarAmigoSolicitudesFragment extends Fragment {
                     public void onDataChange(DataSnapshot dataSnapshot2) {
                         BiciUsuario u = dataSnapshot2.getValue(BiciUsuario.class);
                         u.setUid(dataSnapshot2.getKey());
-                        amigos.add(new ElementoListaAmigo(u.getNombre(), "horus"));
+                        amigos.add(new ElementoListaAmigo(u.getNombre(), u.getPhotoURL()));
                         Log.i(TAG, amigos.toString());
                         cargarAmigosAVista();
                     }
