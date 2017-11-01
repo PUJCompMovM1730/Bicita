@@ -84,6 +84,7 @@ public class MapsActivity extends FragmentActivity
     public	final	static	double	RADIUS_OF_EARTH_KM	 =	6371;
     private static final String TAG = "This TAG";
 
+    Button IniciarActividad;
     private GoogleMap mMap;
     Button fab;
     Button friends;
@@ -100,6 +101,7 @@ public class MapsActivity extends FragmentActivity
 
     Button back;
     LinearLayout modal;
+    LinearLayout nuevoRecorrido;
     ImageButton crear;
     ImageButton imageView6;
     CustomDrawerButton customDrawerButton;
@@ -125,6 +127,15 @@ public class MapsActivity extends FragmentActivity
         geo = new Geocoder(getBaseContext());
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mLocationRequest = createLocationRequest();
+        nuevoRecorrido = (LinearLayout) findViewById(R.id.nuevoRecorrido);
+        IniciarActividad = (Button) findViewById(R.id.IniciarActividad);
+        IniciarActividad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMap.clear();
+                ruta(ini,fin);
+            }
+        });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,6 +167,7 @@ public class MapsActivity extends FragmentActivity
                 LatLng encontrado = buscarDireccion(s);
                 if (encontrado!=null)
                 {
+                    ini=encontrado;
                     if (mIni!=null)
                         mIni.remove();
                     mIni = mMap.addMarker(new MarkerOptions().position(encontrado)
@@ -175,6 +187,7 @@ public class MapsActivity extends FragmentActivity
                 LatLng encontrado = buscarDireccion(s);
                 if (encontrado!=null)
                 {
+                    fin=encontrado;
                     if (mFin!=null)
                         mFin.remove();
                     mIni = mMap.addMarker(new MarkerOptions().position(encontrado)
@@ -229,7 +242,6 @@ public class MapsActivity extends FragmentActivity
                 modal.setVisibility(View.VISIBLE);
                 fab.setVisibility(View.INVISIBLE);
                 friends.setVisibility(View.INVISIBLE);
-
             }
         });
 
@@ -249,9 +261,10 @@ public class MapsActivity extends FragmentActivity
                 //startActivity(in);
                 back.setVisibility(View.INVISIBLE);
                 modal.setVisibility(View.INVISIBLE);
-                fab.setVisibility(View.VISIBLE);
-                friends.setVisibility(View.VISIBLE);
-                ruta(new LatLng(4.632594, -74.067799),new LatLng(4.624039, -74.078785));
+                fab.setVisibility(View.INVISIBLE);
+                friends.setVisibility(View.INVISIBLE);
+                nuevoRecorrido.setVisibility(View.VISIBLE);
+                //ruta(new LatLng(4.632594, -74.067799),new LatLng(4.624039, -74.078785));
             }
         });
         imageView6 = (ImageButton) findViewById(R.id.imageView6);
