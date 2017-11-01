@@ -18,7 +18,7 @@ public class PerfilPropioActivity extends AppCompatActivity {
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent in = new Intent(view.getContext(),RegistrarseActivity.class);
+                Intent in = new Intent(view.getContext(),ActualizarPerfilActivity.class);
                 startActivity(in);
             }
         });
