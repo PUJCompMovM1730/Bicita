@@ -126,9 +126,9 @@ public class ActualizarPerfilActivity extends AppCompatActivity {
                 String str = dataSnapshot.getValue().toString();
                 Map<String, String> obj = (Map<String, String>) dataSnapshot.getValue();
                 nombre.setText(obj.get("nombre"));
-                peso.setText(obj.get("peso"));
-                altura.setText(obj.get("altura"));
-                correo.setText(obj.get("correo"));
+                peso.setText(obj.get("peso").toString());
+                altura.setText(obj.get("altura").toString());
+                correo.setText(obj.get("correo").toString());
 
                /* StorageReference foto = storageRef.child("").*/
             }
