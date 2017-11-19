@@ -13,12 +13,13 @@ public class BiciUsuario {
     private double puntaje;
     private String sexo;
     private String photoURL;
+    private String biografia;
 
     public BiciUsuario() {
     }
 
     public BiciUsuario(String uid, double altura, double peso, String nombre, String correo,
-                       double puntaje, String sexo, String photoURL) {
+                       double puntaje, String sexo, String photoURL, String descripcion) {
         this.uid = uid;
         this.altura = altura;
         this.peso = peso;
@@ -27,6 +28,7 @@ public class BiciUsuario {
         this.puntaje = puntaje;
         this.sexo = sexo;
         this.photoURL = photoURL;
+        this.biografia= descripcion;
     }
 
     @Override
@@ -40,6 +42,7 @@ public class BiciUsuario {
                 ", puntaje=" + puntaje +
                 ", sexo='" + sexo + '\'' +
                 ", photoURL='" + photoURL + '\'' +
+                ", biografia='" + biografia + '\'' +
                 '}';
     }
 
@@ -105,5 +108,13 @@ public class BiciUsuario {
 
     public void setPhotoURL(String photoURL) {
         this.photoURL = photoURL;
+    }
+
+    public String getBiografia() {
+        return biografia;
+    }
+
+    public void setBiografia(String biografia) {
+        this.biografia = biografia;
     }
 }

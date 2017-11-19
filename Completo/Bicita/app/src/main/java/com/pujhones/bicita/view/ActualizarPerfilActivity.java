@@ -65,6 +65,7 @@ public class ActualizarPerfilActivity extends AppCompatActivity {
     EditText altura;
     EditText peso;
     EditText correo;
+    EditText desc;
 
     CircleImageView cam;
 
@@ -92,6 +93,7 @@ public class ActualizarPerfilActivity extends AppCompatActivity {
         altura = (EditText) findViewById(R.id.alturaA);
         peso = (EditText) findViewById(R.id.pesoA);
         correo = (EditText) findViewById(R.id.correoA);
+        desc = (EditText) findViewById(R.id.descA);
 
         correo.setFocusable(false);
 
@@ -126,9 +128,10 @@ public class ActualizarPerfilActivity extends AppCompatActivity {
                 String str = dataSnapshot.getValue().toString();
                 Map<String, String> obj = (Map<String, String>) dataSnapshot.getValue();
                 nombre.setText(obj.get("nombre"));
-                peso.setText(obj.get("peso").toString());
-                altura.setText(obj.get("altura").toString());
+                peso.setText(String.valueOf(obj.get("peso")));
+                altura.setText(String.valueOf(obj.get("altura")));
                 correo.setText(obj.get("correo").toString());
+                desc.setText(obj.get("biografia").toString());
 
                /* StorageReference foto = storageRef.child("").*/
             }
@@ -203,6 +206,7 @@ public class ActualizarPerfilActivity extends AppCompatActivity {
                     database.getReference(PATH_BICIUSUARIOS + user.getUid()).child("altura").setValue(altura.getText().toString());
                     database.getReference(PATH_BICIUSUARIOS + user.getUid()).child("peso").setValue(peso.getText().toString());
                     database.getReference(PATH_BICIUSUARIOS + user.getUid()).child("photoURL").setValue(urlPath);
+                    database.getReference(PATH_BICIUSUARIOS + user.getUid()).child("biografia").setValue(desc.getText().toString());
 
                     Intent in = new Intent(v.getContext(), MapsActivity.class);
                     Toast.makeText(v.getContext(), "Actualización Satisfactoria", Toast.LENGTH_SHORT).show();
