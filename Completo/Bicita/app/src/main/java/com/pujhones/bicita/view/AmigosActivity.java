@@ -3,8 +3,8 @@ package com.pujhones.bicita.view;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -56,7 +56,7 @@ public class AmigosActivity extends AppCompatActivity {
 
         public View getView(final int position, View convertView, ViewGroup parent) {
             //creating the ViewHolder we defined earlier.
-            AmigosActivity.ElementoListaViewHolder holder = new AmigosActivity
+            final AmigosActivity.ElementoListaViewHolder holder = new AmigosActivity
                     .ElementoListaViewHolder();
 
             //creating LayoutInflator for inflating the row layout.
@@ -71,21 +71,38 @@ public class AmigosActivity extends AppCompatActivity {
             holder.imagenPerfil = (CircleImageView) convertView.findViewById(R.id.imgPerfil);
 
             holder.nombre.setText(list.get(position).getNombre());
-            Context context = holder.imagenPerfil.getContext();
+            final Context context = holder.imagenPerfil.getContext();
 
-            Drawable d;
-            InputStream is = null;
-            Log.e(TAG, "Descargando imagen.");
-            try {
-                is = (InputStream) new URL(list.get(position).getPhotoURL()).getContent();
-                d = Drawable.createFromStream(is, null);
-                holder.imagenPerfil.setImageDrawable(d);
-            } catch (IOException e) {
-                Log.e(TAG, e.getMessage());
-                int idImagen = context.getResources().getIdentifier("horus",
-                        "drawable", context.getPackageName());
-                holder.imagenPerfil.setImageResource(idImagen);
-            }
+            AsyncTask<String, Void, Drawable> task = new AsyncTask<String, Void, Drawable>() {
+
+                protected Exception exception = null;
+
+                protected Drawable doInBackground(String... urls) {
+                    Drawable d;
+                    InputStream is = null;
+                    Log.e(TAG, "Descargando imagen.");
+                    try {
+                        is = (InputStream) new URL(list.get(position).getPhotoURL()).getContent();
+                        d = Drawable.createFromStream(is, null);
+                        return d;
+                    } catch (IOException e) {
+                        exception = e;
+                        Log.e(TAG, e.getMessage());
+                    }
+                    return null;
+                }
+                protected void onPostExecute(Drawable d) {
+                    if (exception == null) {
+                        holder.imagenPerfil.setImageDrawable(d);
+                    } else {
+                        int idImagen = context.getResources().getIdentifier("horus",
+                                "drawable", context.getPackageName());
+                        holder.imagenPerfil.setImageResource(idImagen);
+                    }
+                }
+            };
+
+            task.execute();
 
             //return the row view.
             return convertView;
@@ -97,6 +114,7 @@ public class AmigosActivity extends AppCompatActivity {
     FirebaseDatabase fireDB;
 
     ArrayList<ElementoListaAmigo> amigos = new ArrayList<>();
+    ArrayList<BiciUsuario> amigosUsuarios = new ArrayList<>();
 
     ListView lstAmigos;
     FloatingActionButton btnAgregar;
@@ -106,9 +124,7 @@ public class AmigosActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_amigos);
 
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-
-        StrictMode.setThreadPolicy(policy);
+        //TODO volver asíncrono.
 
         fireDB = FirebaseDatabase.getInstance();
 
@@ -122,6 +138,7 @@ public class AmigosActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent in = new Intent(view.getContext(), VerAmigoActivity.class);
+                in.putExtra("usuario", amigosUsuarios.get(i));
                 startActivity(in);
             }
         });
@@ -136,19 +153,18 @@ public class AmigosActivity extends AppCompatActivity {
 
         setTitle("Amigos");
 
-        Log.e(TAG, "Cargando amigos.");
-
-        loadAmigosFromDB();
+        Log.e(TAG, "Cargando solicitudes.");
+        cargarAmigosDesdeDB();
     }
 
-    public void loadAmigosFromDB() {
+    public void cargarAmigosDesdeDB() {
         amigos = new ArrayList<>();
         Query queryAmigos1 = fireDB.getReference("amistades/").orderByChild("amigo1").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
         Query queryAmigos2 = fireDB.getReference("amistades/").orderByChild("amigo2").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        queryAmigos1.addValueEventListener(new ValueEventListener() {
+        queryAmigos1.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                queryBiciUsuariosSnapshot(dataSnapshot, "amigo2");
+                queryAmigos(dataSnapshot, "amigo2");
             }
 
             @Override
@@ -159,10 +175,10 @@ public class AmigosActivity extends AppCompatActivity {
             }
         });
 
-        queryAmigos2.addValueEventListener(new ValueEventListener() {
+        queryAmigos2.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                queryBiciUsuariosSnapshot(dataSnapshot, "amigo1");
+                queryAmigos(dataSnapshot, "amigo1");
             }
 
             @Override
@@ -174,7 +190,7 @@ public class AmigosActivity extends AppCompatActivity {
         });
     }
 
-    protected void queryBiciUsuariosSnapshot(DataSnapshot dataSnapshot, String amigoFieldName) {
+    protected void queryAmigos(DataSnapshot dataSnapshot, String amigoFieldName) {
         Iterator<DataSnapshot> iter = dataSnapshot.getChildren().iterator();
         while (iter.hasNext()) {
             DataSnapshot ds = iter.next();
@@ -182,11 +198,12 @@ public class AmigosActivity extends AppCompatActivity {
                 String uid = ds.child(amigoFieldName).getValue(String.class);
                 Query queryAmigo = fireDB.getReference("biciusuarios/" + uid);
                 Log.e(TAG, uid);
-                queryAmigo.addValueEventListener(new ValueEventListener() {
+                queryAmigo.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot2) {
                         BiciUsuario u = dataSnapshot2.getValue(BiciUsuario.class);
                         u.setUid(dataSnapshot2.getKey());
+                        amigosUsuarios.add(u);
                         amigos.add(new ElementoListaAmigo(u.getNombre(), u.getPhotoURL()));
                         Log.i(TAG, amigos.toString());
                         cargarAmigosEnVista();

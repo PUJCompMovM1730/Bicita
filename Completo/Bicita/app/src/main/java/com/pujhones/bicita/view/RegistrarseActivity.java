@@ -59,6 +59,7 @@ public class RegistrarseActivity extends AppCompatActivity implements AdapterVie
     EditText altura;
     EditText peso;
     EditText pssw;
+    EditText biografia;
 
     Button registro;
     Button galeria;
@@ -91,6 +92,7 @@ public class RegistrarseActivity extends AppCompatActivity implements AdapterVie
         registro = (Button) findViewById(R.id.botonRegistro);
         galeria = (Button) findViewById(R.id.btnGaleria);
         cam = (CircleImageView) findViewById(R.id.btnCamara);
+        biografia = (EditText) findViewById(R.id.biografiaR);
 
         galeria.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,7 +185,8 @@ public class RegistrarseActivity extends AppCompatActivity implements AdapterVie
                                                             correo.getText().toString(),
                                                             0.0,
                                                             gen.getSelectedItem().toString(),
-                                                            fullURL
+                                                            fullURL,
+                                                            biografia.getText().toString()
                                                     );
 
                                                     myRef = database.getReference(PATH_BICIUSUARIOS + FirebaseAuth.getInstance().getCurrentUser().getUid());

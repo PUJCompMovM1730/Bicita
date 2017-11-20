@@ -3,6 +3,7 @@ package com.pujhones.bicita.view;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -55,7 +56,7 @@ public class AgregarAmigoBuscarFragment extends Fragment {
 
         public View getView(final int position, View convertView, ViewGroup parent) {
             //creating the ViewHolder we defined earlier.
-            AmigosActivity.ElementoListaViewHolder holder = new AmigosActivity
+            final AmigosActivity.ElementoListaViewHolder holder = new AmigosActivity
                     .ElementoListaViewHolder();
 
             //creating LayoutInflator for inflating the row layout.
@@ -70,22 +71,38 @@ public class AgregarAmigoBuscarFragment extends Fragment {
             holder.imagenPerfil = (CircleImageView) convertView.findViewById(R.id.imgPerfil);
 
             holder.nombre.setText(list.get(position).getNombre());
-            Context context = holder.imagenPerfil.getContext();
+            final Context context = holder.imagenPerfil.getContext();
 
-            Drawable d;
-            InputStream is = null;
-            Log.e(TAG, "Descargando imagen.");
-            try {
-                is = (InputStream) new URL(list.get(position).getPhotoURL()).getContent();
-                d = Drawable.createFromStream(is, null);
-                holder.imagenPerfil.setImageDrawable(d);
-            } catch (IOException e) {
-                Log.e(TAG, e.getMessage());
-                int idImagen = context.getResources().getIdentifier("horus",
-                        "drawable", context.getPackageName());
-                holder.imagenPerfil.setImageResource(idImagen);
-            }
+            AsyncTask<String, Void, Drawable> task = new AsyncTask<String, Void, Drawable>() {
 
+                protected Exception exception = null;
+
+                protected Drawable doInBackground(String... urls) {
+                    Drawable d;
+                    InputStream is = null;
+                    Log.e(TAG, "Descargando imagen.");
+                    try {
+                        is = (InputStream) new URL(list.get(position).getPhotoURL()).getContent();
+                        d = Drawable.createFromStream(is, null);
+                        return d;
+                    } catch (IOException e) {
+                        exception = e;
+                        Log.e(TAG, e.getMessage());
+                    }
+                    return null;
+                }
+                protected void onPostExecute(Drawable d) {
+                    if (exception == null) {
+                        holder.imagenPerfil.setImageDrawable(d);
+                    } else {
+                        int idImagen = context.getResources().getIdentifier("horus",
+                                "drawable", context.getPackageName());
+                        holder.imagenPerfil.setImageResource(idImagen);
+                    }
+                }
+            };
+
+            task.execute();
 
             //return the row view.
             return convertView;
@@ -126,6 +143,7 @@ public class AgregarAmigoBuscarFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent in = new Intent(view.getContext(), VerAmigoActivity.class);
+
                 startActivity(in);
             }
         });
