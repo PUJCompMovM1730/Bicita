@@ -13,4 +13,5 @@
     <color name="cardview_light_background">#FFD4D4D4</color>
     <color name="buttonBlue">#ff488df4</color>
     <color name="black">#000</color>
+    <color name="fondoClima">#FF0099CC</color>
 </resources>

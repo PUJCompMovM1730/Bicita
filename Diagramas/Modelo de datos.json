@@ -9,6 +9,7 @@
 	"biciusuarios" : {
 		<UID> : {
 			"altura" : <Altura> -> Number,
+			"biografia" : <Biografia> -> String,
 			"correo" : <CorreoElectronico> -> String,
 			"nombre" : <NombreBiciUsuario> -> String,
 			"peso" : <Peso> -> Number,
@@ -57,6 +58,7 @@
 	"empresas" : {
 		<UID> : {
 			"NIT" : <NIT> -> String,
+			"biografia" : <Biografia> -> String,
 			"nombre" : <NombreBiciUsuario> -> String,
 			"razonSocial" : <RazonSocial> -> String,
 			"photoURL" : <URLFotoDePerfil> -> String

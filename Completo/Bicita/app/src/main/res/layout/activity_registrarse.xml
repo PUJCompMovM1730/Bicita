@@ -91,6 +91,12 @@
                 android:layout_marginBottom="10dp"/>
 
             <EditText
+                android:id="@+id/descR"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Biografía/Descripción"
+                android:inputType="text"/>
+            <EditText
                 android:id="@+id/correoR"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
