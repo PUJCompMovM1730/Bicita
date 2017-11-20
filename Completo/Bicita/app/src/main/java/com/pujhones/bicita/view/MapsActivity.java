@@ -81,10 +81,11 @@ public class MapsActivity extends FragmentActivity
     public static final double upperRigthLongitude= -74.009979;
 
     private static final int REQUEST_CHECK_SETTINGS = 2;
-    public	final	static	double	RADIUS_OF_EARTH_KM	 =	6371;
+    public	final	static	double	RADIUS_OF_EARTH_KM = 6371;
     private static final String TAG = "This TAG";
 
     Button IniciarActividad;
+    Button CancelarRecorrido;
     private GoogleMap mMap;
     Button fab;
     Button friends;
@@ -101,7 +102,7 @@ public class MapsActivity extends FragmentActivity
 
     Button back;
     LinearLayout modal;
-    LinearLayout nuevoRecorrido;
+    android.support.constraint.ConstraintLayout nuevoRecorrido;
     ImageButton crear;
     ImageButton imageView6;
     CustomDrawerButton customDrawerButton;
@@ -127,8 +128,11 @@ public class MapsActivity extends FragmentActivity
         geo = new Geocoder(getBaseContext());
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mLocationRequest = createLocationRequest();
-        nuevoRecorrido = (LinearLayout) findViewById(R.id.nuevoRecorrido);
+        nuevoRecorrido = (android.support.constraint.ConstraintLayout) findViewById(R.id.nuevoRecorrido);
         IniciarActividad = (Button) findViewById(R.id.IniciarActividad);
+        search_recorrido_inicio_1 = (SearchView) findViewById(R.id.search_recorrido_inicio_1);
+        search_recorrido_fin_2 = (SearchView) findViewById(R.id.search_recorrido_fin_2);
+        CancelarRecorrido = (Button) findViewById(R.id.CancelarRecorrido);
         IniciarActividad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -159,8 +163,7 @@ public class MapsActivity extends FragmentActivity
             }
         });
 
-        search_recorrido_inicio_1 = (SearchView) findViewById(R.id.search_recorrido_inicio_1);
-        search_recorrido_fin_2 = (SearchView) findViewById(R.id.search_recorrido_fin_2);
+
         search_recorrido_inicio_1.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -201,7 +204,17 @@ public class MapsActivity extends FragmentActivity
                 return false;
             }
         });
-
+        CancelarRecorrido.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mMap!=null)
+                    mMap.clear();
+                if (mIni!=null)
+                    mIni.remove();
+                if (mFin!=null)
+                    mFin.remove();
+            }
+        });
         mLocationCallback =	new	LocationCallback()	 {
             @Override
             public	void	onLocationResult(LocationResult locationResult)	 {
@@ -264,6 +277,7 @@ public class MapsActivity extends FragmentActivity
                 fab.setVisibility(View.INVISIBLE);
                 friends.setVisibility(View.INVISIBLE);
                 nuevoRecorrido.setVisibility(View.VISIBLE);
+                search_recorrido_inicio_1.setQuery(""+lat+","+lon,true);
                 //ruta(new LatLng(4.632594, -74.067799),new LatLng(4.624039, -74.078785));
             }
         });
@@ -505,7 +519,9 @@ public class MapsActivity extends FragmentActivity
     }
 
     public void localizar() {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         LocationSettingsRequest.Builder builder	=	new
