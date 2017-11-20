@@ -87,9 +87,6 @@ public class ClimaActivity extends AppCompatActivity {
             }
         });
 
-
-
-
         asyncTask.execute(lat, lng); //  asyncTask.execute("Latitude", "Longitude")
 
     }
