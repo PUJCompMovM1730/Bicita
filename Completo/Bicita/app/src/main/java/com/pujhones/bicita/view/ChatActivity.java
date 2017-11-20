@@ -1,7 +1,6 @@
 package com.pujhones.bicita.view;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
@@ -13,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -100,7 +100,7 @@ public class ChatActivity extends AppCompatActivity {
     ArrayList<ElementoListaMensaje> chat = new ArrayList<>();
 
     ListView lstMensajes;
-    FloatingActionButton btnAgregar;
+    Button botonEnviar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -117,16 +117,7 @@ public class ChatActivity extends AppCompatActivity {
         Log.i(TAG, FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
         lstMensajes = (ListView) findViewById(R.id.lstMensajes);
-        btnAgregar = (FloatingActionButton) findViewById(R.id.fab);
-
-
-        btnAgregar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent in = new Intent(getBaseContext(), AgregarAmigosActivity.class);
-                startActivity(in);
-            }
-        });
+        botonEnviar = (Button) findViewById(R.id.botonEnviar);
 
         setTitle("Chat");
 
@@ -137,12 +128,12 @@ public class ChatActivity extends AppCompatActivity {
 
     public void loadMensajesFromDB() {
         chat = new ArrayList<>();
-        Query queryMensajes1 = fireDB.getReference("amistades/").orderByChild("amigo1").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        Query queryMensajes2 = fireDB.getReference("amistades/").orderByChild("amigo2").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        Query queryMensajes1 = fireDB.getReference("chats/").orderByChild("destino").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        Query queryMensajes2 = fireDB.getReference("chats/").orderByChild("origen").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
         queryMensajes1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                queryBiciUsuariosSnapshot(dataSnapshot, "amigo2");
+                queryBiciUsuariosSnapshot(dataSnapshot, "destino");
             }
 
             @Override
@@ -156,7 +147,7 @@ public class ChatActivity extends AppCompatActivity {
         queryMensajes2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                queryBiciUsuariosSnapshot(dataSnapshot, "amigo1");
+                queryBiciUsuariosSnapshot(dataSnapshot, "origen");
             }
 
             @Override
@@ -206,3 +197,4 @@ public class ChatActivity extends AppCompatActivity {
         Log.e(TAG, chat.toString());
     }
 }
+
