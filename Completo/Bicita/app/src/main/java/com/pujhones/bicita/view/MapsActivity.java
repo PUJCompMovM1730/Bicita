@@ -357,6 +357,9 @@ public class MapsActivity extends FragmentActivity
             Intent in = new Intent(getBaseContext(), LoginActivity.class);
             startActivity(in);
             //Toast.makeText(getBaseContext(), "entroooooo", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_clima) {
+            Intent in = new Intent(getBaseContext(), ClimaActivity.class);
+            startActivity(in);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

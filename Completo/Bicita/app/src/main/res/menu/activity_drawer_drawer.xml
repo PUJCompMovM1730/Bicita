@@ -32,5 +32,12 @@
                 android:title="Cerrar sesion" />
         </menu>
     </item>
+    <item android:title="Clima">
+        <menu>
+            <item
+                android:id="@+id/nav_clima"
+                android:title="Ver Clima mi posición" />
+        </menu>
+    </item>
 
 </menu>
