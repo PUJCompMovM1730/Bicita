@@ -14,7 +14,9 @@ public class Lugar {
     private double altitud;
     private boolean prom;
 
-    public Lugar(String nombre, String descripción, String photoURL, double longitud, double latitud, double altitud, boolean prom) {
+
+    public Lugar(String uid, String nombre, String descripción, String photoURL, double longitud, double latitud, double altitud, boolean prom) {
+        this.uid = uid;
         this.nombre = nombre;
         this.descripción = descripción;
         this.photoURL = photoURL;
