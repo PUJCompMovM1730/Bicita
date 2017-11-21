@@ -1,6 +1,7 @@
 package com.pujhones.bicita.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -31,6 +33,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -101,6 +104,7 @@ public class ChatActivity extends AppCompatActivity {
 
     ListView lstMensajes;
     Button botonEnviar;
+    EditText textoMensaje;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -118,18 +122,38 @@ public class ChatActivity extends AppCompatActivity {
 
         lstMensajes = (ListView) findViewById(R.id.lstMensajes);
         botonEnviar = (Button) findViewById(R.id.botonEnviar);
+        textoMensaje = (EditText) findViewById(R.id.textoMensaje);
+
+        Intent in = getIntent();
+        final BiciUsuario otro = (BiciUsuario) in.getSerializableExtra("usuarioOtro");
+        final BiciUsuario propio = (BiciUsuario) in.getSerializableExtra("usuarioPropio|");
 
         setTitle("Chat");
 
         Log.e(TAG, "Cargando mensajes.");
 
-        loadMensajesFromDB();
+        loadMensajesFromDB(propio, otro);
+
+        botonEnviar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Mensaje mensaje = new Mensaje(propio.getUid(),textoMensaje.getText().toString(), new Date());
+
+                textoMensaje.setText("");
+            }
+        });
     }
 
-    public void loadMensajesFromDB() {
+    public void loadMensajesFromDB(BiciUsuario propio, BiciUsuario otro) {
         chat = new ArrayList<>();
-        Query queryMensajes1 = fireDB.getReference("chats/").orderByChild("destino").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        Query queryMensajes2 = fireDB.getReference("chats/").orderByChild("origen").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        Query queryMensajes1 = fireDB.getReference("chats/").orderByChild("destino")
+                                .equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                .orderByChild("origen").equalTo(otro.getUid());
+
+        Query queryMensajes2 = fireDB.getReference("chats/").orderByChild("origen")
+                                .equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                .orderByChild("destino").equalTo(otro.getUid());
+
         queryMensajes1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
