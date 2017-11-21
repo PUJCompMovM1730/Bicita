@@ -25,4 +25,10 @@ public class Mensaje {
     public Date getFecha() { return fecha; }
 
     public void setFecha(Date fecha) { this.fecha = fecha; }
+
+    public Mensaje(String autor, String contenido, Date fecha) {
+        this.autor = autor;
+        this.contenido = contenido;
+        this.fecha = fecha;
+    }
 }

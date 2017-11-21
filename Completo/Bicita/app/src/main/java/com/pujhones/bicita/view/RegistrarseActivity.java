@@ -135,7 +135,10 @@ public class RegistrarseActivity extends AppCompatActivity implements AdapterVie
                 if (!nombre.getText().toString().equals("") &&
                         !altura.getText().toString().equals("") &&
                         !peso.getText().toString().equals("") &&
+<<<<<<< HEAD
+=======
                         !biografia.getText().toString().equals("") &&
+>>>>>>> 295d630d25a3062fa30e2187a2594950076ae722
                         !correo.getText().toString().equals("") && android.util.Patterns.EMAIL_ADDRESS.matcher(correo.getText()).matches() &&
                         !pssw.getText().toString().equals("") && pssw.getText().toString().length() >= 5) {
                     mAuth.createUserWithEmailAndPassword(correo.getText().toString(), pssw.getText().toString())
