@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity{
     private final int SIGNUP_REQUEST = 100;
 
     protected EditText etEmail, etPassword;
-    protected Button btnLogin, btnSignup;
+    protected Button btnLogin, btnSignup, btnEmpresa;
 
     protected FirebaseAuth auth;
     protected FirebaseAuth.AuthStateListener authStateListener;
@@ -48,6 +48,8 @@ public class LoginActivity extends AppCompatActivity{
 
         btnLogin = (Button) findViewById(R.id.botonLogin);
         btnSignup = (Button) findViewById(R.id.botonRegister);
+        btnEmpresa = (Button) findViewById(R.id.botonRegisterEmpresa);
+
 
         auth = FirebaseAuth.getInstance();
         authStateListener = new FirebaseAuth.AuthStateListener() {
@@ -86,7 +88,13 @@ public class LoginActivity extends AppCompatActivity{
                 }
             }
         });
-
+        btnEmpresa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(),RegistrarEmpresaActivity.class);
+                startActivity(intent);
+            }
+        });
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
