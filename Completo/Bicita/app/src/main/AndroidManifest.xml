@@ -59,7 +59,13 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".view.ChatActivity" />
         <activity android:name=".view.MensajesActivity" />
-        <activity android:name=".view.ClimaActivity" android:screenOrientation="portrait" android:label="Clima"/>
+        <activity
+            android:name=".view.ClimaActivity"
+            android:label="Clima"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.ActivityPerfilEmpresa" />
+        <activity android:name=".view.ActivityActualizarPerfilEmpresa" />
+        <activity android:name=".view.RegistrarEmpresaActivity"></activity>
     </application>
 
 </manifest>
