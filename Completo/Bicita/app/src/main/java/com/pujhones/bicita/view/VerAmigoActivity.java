@@ -163,6 +163,7 @@ public class VerAmigoActivity extends AppCompatActivity {
                             BiciUsuario uPropio = dataSnapshot.getValue(BiciUsuario.class);
                             in.putExtra("usuarioPropio", uPropio);
                             in.putExtra("usuarioOtro", u);
+                            Log.i(TAG, "INICIANDO OTRA ACTIVIDAD.");
                             startActivity(in);
                         }
 
