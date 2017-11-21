@@ -142,31 +142,23 @@ public class AgregarAmigoSolicitudesFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent in = new Intent(view.getContext(), VerAmigoActivity.class);
                 in.putExtra("usuario", solicitudesUsuarios.get(i));
+                in.putExtra("tipo", "solicitud");
                 startActivity(in);
             }
         });
-
-        loadAmigosFromDB();
     }
 
-    public void loadAmigosFromDB() {
-        Query queryAmigos1 = fireDB.getReference("amistades/").orderByChild("amigo1").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e(TAG, "Cargando solicitudes.");
+        cargarAmigosDesdeDB();
+    }
+
+    public void cargarAmigosDesdeDB() {
         Query queryAmigos2 = fireDB.getReference("amistades/").orderByChild("amigo2").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        queryAmigos1.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                queryBiciUsuariosSnapshot(dataSnapshot, "amigo2");
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-                // ...
-            }
-        });
-
-        queryAmigos2.addValueEventListener(new ValueEventListener() {
+        queryAmigos2.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 queryBiciUsuariosSnapshot(dataSnapshot, "amigo1");
@@ -190,7 +182,7 @@ public class AgregarAmigoSolicitudesFragment extends Fragment {
                 String uid = ds.child(amigoFieldName).getValue(String.class);
                 Query queryAmigo = fireDB.getReference("biciusuarios/" + uid);
                 Log.i(TAG, uid);
-                queryAmigo.addValueEventListener(new ValueEventListener() {
+                queryAmigo.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot2) {
                         BiciUsuario u = dataSnapshot2.getValue(BiciUsuario.class);

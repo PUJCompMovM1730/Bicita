@@ -124,8 +124,6 @@ public class AmigosActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_amigos);
 
-        //TODO volver asíncrono.
-
         fireDB = FirebaseDatabase.getInstance();
 
         Log.i(TAG, FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -139,6 +137,7 @@ public class AmigosActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent in = new Intent(view.getContext(), VerAmigoActivity.class);
                 in.putExtra("usuario", amigosUsuarios.get(i));
+                in.putExtra("tipo", "amigo");
                 startActivity(in);
             }
         });
@@ -152,12 +151,16 @@ public class AmigosActivity extends AppCompatActivity {
         });
 
         setTitle("Amigos");
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
         Log.e(TAG, "Cargando solicitudes.");
         cargarAmigosDesdeDB();
     }
 
-    public void cargarAmigosDesdeDB() {
+    synchronized public void cargarAmigosDesdeDB() {
         amigos = new ArrayList<>();
         Query queryAmigos1 = fireDB.getReference("amistades/").orderByChild("amigo1").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
         Query queryAmigos2 = fireDB.getReference("amistades/").orderByChild("amigo2").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -190,7 +193,7 @@ public class AmigosActivity extends AppCompatActivity {
         });
     }
 
-    protected void queryAmigos(DataSnapshot dataSnapshot, String amigoFieldName) {
+    synchronized protected void queryAmigos(DataSnapshot dataSnapshot, String amigoFieldName) {
         Iterator<DataSnapshot> iter = dataSnapshot.getChildren().iterator();
         while (iter.hasNext()) {
             DataSnapshot ds = iter.next();
@@ -217,11 +220,10 @@ public class AmigosActivity extends AppCompatActivity {
                     }
                 });
             }
-
         }
     }
 
-    protected void cargarAmigosEnVista() {
+    synchronized protected void cargarAmigosEnVista() {
         AmigosActivity.CustomArrayAdapter dataAdapter = new
                 AmigosActivity.CustomArrayAdapter(getBaseContext(), R.id.txtNombre,
                 amigos);

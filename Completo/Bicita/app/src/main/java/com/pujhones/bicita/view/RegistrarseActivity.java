@@ -87,7 +87,6 @@ public class RegistrarseActivity extends AppCompatActivity implements AdapterVie
         nombre = (EditText) findViewById(R.id.nombreR);
         correo = (EditText) findViewById(R.id.correoR);
         altura = (EditText) findViewById(R.id.alturaR);
-        desc = (EditText) findViewById(R.id.descR);
         peso = (EditText) findViewById(R.id.pesoR);
         pssw = (EditText) findViewById(R.id.psswR);
         registro = (Button) findViewById(R.id.botonRegistro);
@@ -136,7 +135,7 @@ public class RegistrarseActivity extends AppCompatActivity implements AdapterVie
                 if (!nombre.getText().toString().equals("") &&
                         !altura.getText().toString().equals("") &&
                         !peso.getText().toString().equals("") &&
-                        !desc.getText().toString().equals("") &&
+                        !biografia.getText().toString().equals("") &&
                         !correo.getText().toString().equals("") && android.util.Patterns.EMAIL_ADDRESS.matcher(correo.getText()).matches() &&
                         !pssw.getText().toString().equals("") && pssw.getText().toString().length() >= 5) {
                     mAuth.createUserWithEmailAndPassword(correo.getText().toString(), pssw.getText().toString())
