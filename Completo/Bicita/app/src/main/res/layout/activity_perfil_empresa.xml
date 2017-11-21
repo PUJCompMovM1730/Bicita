@@ -45,5 +45,11 @@
         android:id="@+id/lugares"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="lugares" />
+        android:text="crear Lugar" />
+
+    <Button
+        android:id="@+id/verLugares"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ver Lugares" />
 </LinearLayout>
