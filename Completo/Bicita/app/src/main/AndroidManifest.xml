@@ -67,7 +67,8 @@
         <activity android:name=".view.ActivityActualizarPerfilEmpresa" />
         <activity android:name=".view.RegistrarEmpresaActivity" />
         <activity android:name=".view.ManejoLugarActivity" />
-        <activity android:name=".view.CrearLugarActivity"></activity>
+        <activity android:name=".view.CrearLugarActivity" />
+        <activity android:name=".view.VerLugarEmpresaActivity"></activity>
     </application>
 
 </manifest>

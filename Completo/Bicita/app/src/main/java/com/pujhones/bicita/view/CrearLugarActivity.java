@@ -86,7 +86,7 @@ public class CrearLugarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_lugar);
         mAuth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance(PATH_BICIUSUARIOS);
+        database = FirebaseDatabase.getInstance();
         storageRef = FirebaseStorage.getInstance().getReference(PATH_BICIUSUARIOS);
 
         nombre = (EditText) findViewById(R.id.nombreLugar);
@@ -107,6 +107,7 @@ public class CrearLugarActivity extends AppCompatActivity {
                 LatLng aux=  buscarDireccion(lug.getText().toString());
                 longitud = aux.longitude;
                 latitud = aux.latitude;
+                Toast.makeText(CrearLugarActivity.this, "Ubicación colocada exitosa", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -135,6 +136,7 @@ public class CrearLugarActivity extends AppCompatActivity {
                     StorageReference url = storageRef.child(urlPath);
 
                     Lugar bu = new Lugar(
+                            mAuth.getCurrentUser().getUid().toString(),
                             nombre.getText().toString(),
                             descripcion.getText().toString(),
                             urlPath,
@@ -142,8 +144,8 @@ public class CrearLugarActivity extends AppCompatActivity {
                             latitud,
                             0,
                             promocionar.isEnabled());
-                    database.getReference().push().setValue(bu);
-                    Log.i("algo", "dkalshdaskjd");
+                    database.getReference(PATH_BICIUSUARIOS).push().setValue(bu);
+                    Toast.makeText(CrearLugarActivity.this, "Lugar  colocado exitoso", Toast.LENGTH_SHORT).show();
                     if (descripcion.getText().toString().equals("")) {
                         Toast.makeText(CrearLugarActivity.this, "La descripción no puede estar vacia", Toast.LENGTH_SHORT).show();
                     }

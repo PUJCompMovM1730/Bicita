@@ -183,6 +183,7 @@ public class LoginActivity extends AppCompatActivity{
     private void launchMaps() {
         Intent in = new Intent(LoginActivity.this, MapsActivity.class);
         startActivity(in);
+        
     }
 }
 

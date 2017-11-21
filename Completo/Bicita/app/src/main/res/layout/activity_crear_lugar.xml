@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:ems="10"
-                android:hint="Descripcion"
+                android:hint="Esciba la locación "
                 android:inputType="textMultiLine"/>
             <RadioButton
                 android:id="@+id/promocionar"

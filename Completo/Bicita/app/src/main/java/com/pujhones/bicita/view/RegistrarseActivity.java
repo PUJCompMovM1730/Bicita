@@ -136,7 +136,9 @@ public class RegistrarseActivity extends AppCompatActivity implements AdapterVie
                         !altura.getText().toString().equals("") &&
                         !peso.getText().toString().equals("") &&
 
+
                         !biografia.getText().toString().equals("") &&
+
 
                         !correo.getText().toString().equals("") && android.util.Patterns.EMAIL_ADDRESS.matcher(correo.getText()).matches() &&
                         !pssw.getText().toString().equals("") && pssw.getText().toString().length() >= 5) {
