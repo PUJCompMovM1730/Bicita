@@ -84,11 +84,16 @@ public class MapsActivity extends FragmentActivity
     public	final	static	double	RADIUS_OF_EARTH_KM = 6371;
     private static final String TAG = "This TAG";
 
+    public static String FACEBOOK_URL = "https://www.facebook.com/HumorInfomatico/";
+    public static String FACEBOOK_PAGE_ID = "HumorInfomatico";
+
     Button IniciarActividad;
     Button CancelarRecorrido;
     private GoogleMap mMap;
-    Button fab;
-    Button friends;
+    android.support.design.widget.FloatingActionButton fab;
+    android.support.design.widget.FloatingActionButton friends;
+    android.support.design.widget.FloatingActionButton floatingActionButton5;
+    android.support.design.widget.FloatingActionButton floatingActionButton3;
     Geocoder geo;
     Marker bogotaBike;
     SearchView texto;
@@ -100,6 +105,7 @@ public class MapsActivity extends FragmentActivity
     LatLng ini;
     LatLng fin;
 
+    LinearLayout buscarPrincipal;
     Button back;
     LinearLayout modal;
     android.support.constraint.ConstraintLayout nuevoRecorrido;
@@ -108,6 +114,7 @@ public class MapsActivity extends FragmentActivity
     CustomDrawerButton customDrawerButton;
     Double lat=4.626925;
     Double lon=-74.063905;
+    android.support.constraint.ConstraintLayout rutaCreada;
 
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationRequest mLocationRequest;
@@ -133,14 +140,36 @@ public class MapsActivity extends FragmentActivity
         search_recorrido_inicio_1 = (SearchView) findViewById(R.id.search_recorrido_inicio_1);
         search_recorrido_fin_2 = (SearchView) findViewById(R.id.search_recorrido_fin_2);
         CancelarRecorrido = (Button) findViewById(R.id.CancelarRecorrido);
+        fab = (android.support.design.widget.FloatingActionButton) findViewById(R.id.fab);
+        friends = (android.support.design.widget.FloatingActionButton) findViewById(R.id.Friends);
+        rutaCreada = (android.support.constraint.ConstraintLayout) findViewById(R.id.rutaCreada);
+        floatingActionButton5 = (android.support.design.widget.FloatingActionButton) findViewById(R.id.floatingActionButton5);
+        floatingActionButton3 = (android.support.design.widget.FloatingActionButton) findViewById(R.id.floatingActionButton3);
+        buscarPrincipal = (LinearLayout) findViewById(R.id.buscarPrincipal);
         IniciarActividad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mMap.clear();
                 ruta(ini,fin);
+                back.setVisibility(View.INVISIBLE);
+                modal.setVisibility(View.INVISIBLE);
+                fab.setVisibility(View.INVISIBLE);
+                friends.setVisibility(View.INVISIBLE);
+                nuevoRecorrido.setVisibility(View.INVISIBLE);
+                rutaCreada.setVisibility(View.VISIBLE);
+                buscarPrincipal.setVisibility(View.INVISIBLE);
             }
         });
+        floatingActionButton5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent share = new Intent(Intent.ACTION_SEND);
+                share.setType("text/plain");
+                share.putExtra(Intent.EXTRA_TEXT, "Yo me voy en BICITA");
 
+                startActivity(Intent.createChooser(share, "Title of the dialog the system will open"));
+            }
+        });
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -163,6 +192,20 @@ public class MapsActivity extends FragmentActivity
             }
         });
 
+        floatingActionButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                back.setVisibility(View.INVISIBLE);
+                modal.setVisibility(View.INVISIBLE);
+                fab.setVisibility(View.VISIBLE);
+                friends.setVisibility(View.VISIBLE);
+                nuevoRecorrido.setVisibility(View.INVISIBLE);
+                rutaCreada.setVisibility(View.INVISIBLE);
+                buscarPrincipal.setVisibility(View.VISIBLE);
+                if (mMap!=null)
+                    mMap.clear();
+            }
+        });
 
         search_recorrido_inicio_1.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -207,6 +250,12 @@ public class MapsActivity extends FragmentActivity
         CancelarRecorrido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                back.setVisibility(View.INVISIBLE);
+                modal.setVisibility(View.INVISIBLE);
+                fab.setVisibility(View.VISIBLE);
+                friends.setVisibility(View.VISIBLE);
+                nuevoRecorrido.setVisibility(View.INVISIBLE);
+                buscarPrincipal.setVisibility(View.VISIBLE);
                 if (mMap!=null)
                     mMap.clear();
                 if (mIni!=null)
@@ -241,13 +290,9 @@ public class MapsActivity extends FragmentActivity
                 }
             }
         };
-
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        fab = (Button) findViewById(R.id.fab);
-        friends = (Button) findViewById(R.id.Friends);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -277,6 +322,7 @@ public class MapsActivity extends FragmentActivity
                 fab.setVisibility(View.INVISIBLE);
                 friends.setVisibility(View.INVISIBLE);
                 nuevoRecorrido.setVisibility(View.VISIBLE);
+                buscarPrincipal.setVisibility(View.INVISIBLE);
                 search_recorrido_inicio_1.setQuery(""+lat+","+lon,true);
                 //ruta(new LatLng(4.632594, -74.067799),new LatLng(4.624039, -74.078785));
             }
@@ -380,6 +426,7 @@ public class MapsActivity extends FragmentActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
     //---------------------------------------------------------------------------------------------------DRAWER
     private LatLng buscarDireccion(String addressString) {
         if (!addressString.isEmpty()) {
@@ -709,6 +756,20 @@ public class MapsActivity extends FragmentActivity
             poly.add(p);
         }
         return poly;
+    }
+
+    public String getFacebookPageURL(Context context) {
+        PackageManager packageManager = context.getPackageManager();
+        try {
+            int versionCode = packageManager.getPackageInfo("com.facebook.katana", 0).versionCode;
+            if (versionCode >= 3002850) { //newer versions of fb app
+                return "fb://facewebmodal/f?href=" + FACEBOOK_URL;
+            } else { //older versions of fb app
+                return "fb://page/" + FACEBOOK_PAGE_ID;
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            return FACEBOOK_URL; //normal web url
+        }
     }
 
 }
