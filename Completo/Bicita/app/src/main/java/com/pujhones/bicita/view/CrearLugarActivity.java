@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -20,6 +22,9 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -40,6 +45,7 @@ import com.pujhones.bicita.model.Lugar;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -50,6 +56,7 @@ public class CrearLugarActivity extends AppCompatActivity {
     EditText nombre;
     EditText descripcion;
     RadioButton promocionar;
+    EditText lug;
 
     double longitud;
     double latitud;
@@ -63,29 +70,46 @@ public class CrearLugarActivity extends AppCompatActivity {
     CircleImageView cam;
     Button galeria;
 
+    Geocoder geo;
+
     public final static String TAG = "REGISTRO_EMPRESAS";
-    public final static String PATH_BICIUSUARIOS = "biciempresas/";
+    public final static String PATH_BICIUSUARIOS = "lugares/";
     public final static String PATH_STORAGE_FOTOSPRFIL = "fotosPerfil/";
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
     private static final int MY_PERMISSIONS_REQUEST_CAMERA = 2;
+    public static final double lowerLeftLatitude = 4.484987;
+    public static final double lowerLeftLongitude= -74.212539;
+    public static final double upperRightLatitude= 4.769700;
+    public static final double upperRigthLongitude= -74.009979;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crear_lugar);
         mAuth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance();
-        storageRef = FirebaseStorage.getInstance().getReference();
+        database = FirebaseDatabase.getInstance(PATH_BICIUSUARIOS);
+        storageRef = FirebaseStorage.getInstance().getReference(PATH_BICIUSUARIOS);
+
         nombre = (EditText) findViewById(R.id.nombreLugar);
+        lug = (EditText) findViewById(R.id.stringLugar);
+        geo = new Geocoder(getBaseContext());
 
         descripcion = (EditText) findViewById(R.id.descripcionLugar);
         promocionar = (RadioButton) findViewById(R.id.promocionar);
 
         registro = (Button) findViewById(R.id.botonRegistro_lugar);
         elegir = (Button) findViewById(R.id.botonElegir_lugar);
-        galeria = (Button) findViewById(R.id.btnCamara_lugar);
+        galeria = (Button) findViewById(R.id.btnGaleria_lugar);
         cam = (CircleImageView) findViewById(R.id.btnCamara_lugar);
 
+        elegir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LatLng aux=  buscarDireccion(lug.getText().toString());
+                longitud = aux.longitude;
+                latitud = aux.latitude;
 
+            }
+        });
         galeria.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,6 +123,7 @@ public class CrearLugarActivity extends AppCompatActivity {
                 abrirCamaraConPermiso();
             }
         });
+
         registro.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -106,75 +131,19 @@ public class CrearLugarActivity extends AppCompatActivity {
                 if (!nombre.getText().toString().equals("") &&
                         !descripcion.getText().toString().equals("")
                        ) {
-                    mAuth.createUserWithEmailAndPassword(nombre.getText().toString(), descripcion.getText().toString())
-                            .addOnCompleteListener(CrearLugarActivity.this, new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (task.isSuccessful()) {
-                                        Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
-                                        FirebaseUser user = mAuth.getCurrentUser();
-                                        if (user != null) {
-                                            UserProfileChangeRequest.Builder upcrb = new UserProfileChangeRequest.Builder();
-                                            upcrb.setDisplayName(nombre.getText().toString());
-                                            //upcrb.setPhotoUri(Uri.parse("path/to/pic"));//fake	 uri,	real	one	coming	soon
-                                            user.updateProfile(upcrb.build());
+                    String urlPath = PATH_STORAGE_FOTOSPRFIL + "URL::" + nombre.getText().toString() + ".jpg";
+                    StorageReference url = storageRef.child(urlPath);
 
-                                            String urlPath = PATH_STORAGE_FOTOSPRFIL + "URL::" + user.getUid() + ".jpg";
-                                            StorageReference url = storageRef.child(urlPath);
-
-                                            // Get the data from an ImageView as bytes
-                                            cam.setDrawingCacheEnabled(true);
-                                            cam.buildDrawingCache();
-                                            Bitmap bitmap = cam.getDrawingCache();
-                                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                                            byte[] data = baos.toByteArray();
-
-                                            UploadTask uploadTask = url.putBytes(data);
-                                            uploadTask.addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception exception) {
-                                                    // Handle unsuccessful uploads
-                                                }
-                                            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                                @Override
-                                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                                                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                                                    String fullURL = "";
-                                                    if (downloadUrl != null) {
-                                                        fullURL = downloadUrl.toString();
-                                                    }
-                                                    Log.i(TAG, fullURL);
-                                                    // Lugar(String uid, String nombre, String descripción, String photoURL, double longitud, double latitud, double altitud, boolean prom)
-                                                   /* Lugar bu = new Lugar(
-                                                            mAuth.getCurrentUser().getUid(),
-                                                            nombre.getText().toString(),
-                                                            descripcion.getText().toString(),
-                                                            fullURL,
-
-                                                            promocionar.isEnabled());
-                                                    Log.i("URL", bu.getPhotoURL());*/
-
-                                                    myRef = database.getReference(PATH_BICIUSUARIOS + FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                                   // myRef.setValue(bu);
-
-                                                    Toast.makeText(CrearLugarActivity.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
-                                                    startActivity(new Intent(CrearLugarActivity.this, ActivityPerfilEmpresa.class));
-                                                }
-                                            });
-                                        }
-                                    }
-                                    if (!task.isSuccessful()) {
-                                        Toast.makeText(CrearLugarActivity.this, R.string.auth_failed + task.getException().toString(), Toast.LENGTH_SHORT).show();
-                                        Log.e(TAG, task.getException().getMessage());
-                                    }
-                                }
-                            });
-                } else {
-                    if (nombre.getText().toString().equals("")) {
-                        Toast.makeText(CrearLugarActivity.this, "El nombre no puede estar vacio", Toast.LENGTH_SHORT).show();
-                    }
+                    Lugar bu = new Lugar(
+                            nombre.getText().toString(),
+                            descripcion.getText().toString(),
+                            urlPath,
+                            longitud,
+                            latitud,
+                            0,
+                            promocionar.isEnabled());
+                    database.getReference().push().setValue(bu);
+                    Log.i("algo", "dkalshdaskjd");
                     if (descripcion.getText().toString().equals("")) {
                         Toast.makeText(CrearLugarActivity.this, "La descripción no puede estar vacia", Toast.LENGTH_SHORT).show();
                     }
@@ -289,5 +258,31 @@ public class CrearLugarActivity extends AppCompatActivity {
     public void onNothingSelected(AdapterView<?> parent) {
         // Another interface callback
     }
+    private LatLng buscarDireccion(String addressString) {
+        if (!addressString.isEmpty()) {
+            try {
+                List<Address> addresses = geo.getFromLocationName(
+                        addressString, 2,
+                        lowerLeftLatitude,
+                        lowerLeftLongitude,
+                        upperRightLatitude,
+                        upperRigthLongitude);
+                if (addresses != null && !addresses.isEmpty()) {
+                    android.location.Address addressResult = addresses.get(0);
+                    LatLng position = new LatLng(addressResult.getLatitude(), addressResult.getLongitude());
+
+                    return position;
+                } else {
+                    Toast.makeText(CrearLugarActivity.this, "Dirección no encontrada", Toast.LENGTH_SHORT).show();
+                }
+            } catch (Exception e) {
+
+            }
+        } else {
+            Toast.makeText(CrearLugarActivity.this, "La dirección esta vacía", Toast.LENGTH_SHORT).show();
+        }
+        return null;
+    }
+
 
 }

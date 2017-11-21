@@ -118,8 +118,8 @@ public class ActivityPerfilEmpresa extends AppCompatActivity {
         lugar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              //  Intent intent = new Intent(view.getContext(), verLugares);
-               // startActivity(intent);
+              Intent intent = new Intent(view.getContext(), CrearLugarActivity.class);
+               startActivity(intent);
             }
         });
     }

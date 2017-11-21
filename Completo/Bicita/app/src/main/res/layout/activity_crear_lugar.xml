@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.pujhones.bicita.view.RegistrarseActivity">
+    >
 
     <ScrollView
         android:layout_width="0dp"
@@ -59,7 +59,14 @@
                 android:hint="Descripcion"
                 android:inputType="textMultiLine"/>
 
-
+            <EditText
+                android:id="@+id/stringLugar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:ems="10"
+                android:hint="Descripcion"
+                android:inputType="textMultiLine"/>
             <RadioButton
                 android:id="@+id/promocionar"
                 android:layout_width="match_parent"

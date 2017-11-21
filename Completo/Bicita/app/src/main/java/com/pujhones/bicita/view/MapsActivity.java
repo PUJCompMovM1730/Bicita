@@ -83,6 +83,7 @@ public class MapsActivity extends FragmentActivity
     private static final int REQUEST_CHECK_SETTINGS = 2;
     public	final	static	double	RADIUS_OF_EARTH_KM = 6371;
     private static final String TAG = "This TAG";
+    private static final int REQUEST_LUGAR = 24;
 
     public static String FACEBOOK_URL = "https://www.facebook.com/HumorInfomatico/";
     public static String FACEBOOK_PAGE_ID = "HumorInfomatico";
@@ -537,6 +538,18 @@ public class MapsActivity extends FragmentActivity
 
     @Override
     protected	void	onActivityResult(int requestCode,	 int resultCode,	 Intent	 data)	 {
+        Log.i("codifgo", ""+requestCode);
+        if (requestCode ==REQUEST_LUGAR){
+            CameraPosition pos= this.mMap.getCameraPosition();
+            double lati= pos.target.latitude;
+            double longi= pos.target.longitude;
+            Log.i("LLEGOOO",""+longi);
+            Intent inte = new Intent(this, CrearLugarActivity.class);
+            inte.putExtra("lati", lati);
+            inte.putExtra("longi",longi);
+            setResult(REQUEST_LUGAR, inte);
+           finish();
+        }
         switch	(requestCode)	 {
             case	REQUEST_CHECK_SETTINGS:	 {
                 if	(resultCode ==	RESULT_OK)	 {
@@ -547,6 +560,17 @@ public class MapsActivity extends FragmentActivity
                             Toast.LENGTH_LONG).show();
                 }
                 return;
+            }
+            case REQUEST_LUGAR: {
+                //// TODO: 20/11/2017
+                CameraPosition pos= this.mMap.getCameraPosition();
+                double lati= pos.target.latitude;
+                double longi= pos.target.longitude;
+                Log.i("LLEGOOO",""+longi);
+                Intent inte = new Intent(this, CrearLugarActivity.class);
+                inte.putExtra("lati", lati);
+                inte.putExtra("longi",longi);
+                startActivity(inte);
             }
         }
     }
