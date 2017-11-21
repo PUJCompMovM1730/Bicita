@@ -41,6 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#77000000"
+        android:translationZ="10dp"
         android:visibility="invisible"/>
     <LinearLayout
         android:id="@+id/modal"
@@ -189,7 +190,39 @@
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginLeft="8dp"
             app:layout_constraintLeft_toLeftOf="parent"
+            android:textColor="@color/colorWhite"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"/>
     </android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:id="@+id/score"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/colorWhite"
+        android:layout_marginTop="75dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:translationZ="20dp"
+        android:visibility="invisible"
+        android:gravity="center">
+        <TextView
+            android:id="@+id/calorias"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"/>
+        <TextView
+            android:id="@+id/puntaje"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"/>
+        <Button
+            android:id="@+id/closeScore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorRed"
+            android:textColor="@color/colorWhite"
+            android:textSize="25sp"
+            android:text="cerrar"/>
+    </LinearLayout>
 </FrameLayout>
