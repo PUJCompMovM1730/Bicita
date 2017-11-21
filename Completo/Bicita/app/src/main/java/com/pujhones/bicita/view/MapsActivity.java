@@ -28,6 +28,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -65,8 +66,12 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.pujhones.bicita.R;
 import com.pujhones.bicita.model.CustomDrawerButton;
+import com.pujhones.bicita.model.Recorrido;
+import com.pujhones.bicita.model.Ubicacion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,10 +88,6 @@ public class MapsActivity extends FragmentActivity
     private static final int REQUEST_CHECK_SETTINGS = 2;
     public	final	static	double	RADIUS_OF_EARTH_KM = 6371;
     private static final String TAG = "This TAG";
-    private static final int REQUEST_LUGAR = 24;
-
-    public static String FACEBOOK_URL = "https://www.facebook.com/HumorInfomatico/";
-    public static String FACEBOOK_PAGE_ID = "HumorInfomatico";
 
     Button IniciarActividad;
     Button CancelarRecorrido;
@@ -106,6 +107,11 @@ public class MapsActivity extends FragmentActivity
     LatLng ini;
     LatLng fin;
 
+    LinearLayout score;
+    TextView calorias;
+    TextView puntaje;
+    Button closeScore;
+
     LinearLayout buscarPrincipal;
     Button back;
     LinearLayout modal;
@@ -122,7 +128,11 @@ public class MapsActivity extends FragmentActivity
     private LocationCallback mLocationCallback;
     boolean focused;
 
+    FirebaseDatabase database;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    DatabaseReference myRef;
+
+    List <Ubicacion> camino;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +140,15 @@ public class MapsActivity extends FragmentActivity
         setContentView(R.layout.activity_maps);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
+        score = (LinearLayout) findViewById(R.id.score);
+        calorias = (TextView) findViewById(R.id.calorias);
+        puntaje = (TextView) findViewById(R.id.puntaje);
+        closeScore = (Button) findViewById(R.id.closeScore);
+
+
+        camino = new ArrayList<Ubicacion>();
+        database = FirebaseDatabase.getInstance();
         texto = (SearchView) findViewById(R.id.search);
         modal = (LinearLayout) findViewById(R.id.modal);
         back = (Button) findViewById(R.id.back);
@@ -159,6 +178,7 @@ public class MapsActivity extends FragmentActivity
                 nuevoRecorrido.setVisibility(View.INVISIBLE);
                 rutaCreada.setVisibility(View.VISIBLE);
                 buscarPrincipal.setVisibility(View.INVISIBLE);
+                camino = new ArrayList<Ubicacion>();
             }
         });
         floatingActionButton5.setOnClickListener(new View.OnClickListener() {
@@ -178,6 +198,7 @@ public class MapsActivity extends FragmentActivity
                 modal.setVisibility(View.INVISIBLE);
                 fab.setVisibility(View.VISIBLE);
                 friends.setVisibility(View.VISIBLE);
+                score.setVisibility(View.INVISIBLE);
             }
         });
         texto.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -193,18 +214,39 @@ public class MapsActivity extends FragmentActivity
             }
         });
 
+        closeScore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                score.setVisibility(View.INVISIBLE);
+                back.setVisibility(View.INVISIBLE);
+            }
+        });
+
         floatingActionButton3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                back.setVisibility(View.INVISIBLE);
+                myRef = database.getReference("recorridos");
+                String key = myRef.push().getKey();
+                myRef = database.getReference("recorridos/" + key);
+                Recorrido re = new Recorrido(new ArrayList <String> (),
+                        camino,
+                        mAuth.getCurrentUser().getUid(),
+                        new Ubicacion(),
+                        new Ubicacion());
+                myRef.setValue(re);
+                //List <Ubicacion> calcular = new ArrayList<Ubicacion>(camino);
+                double caloriasQ = 0.049 * (60*2.2)*((double)camino.size()/60.0);
+                calorias.setText("Quemaste " + caloriasQ + " calorias!");
+                puntaje.setText("Sumaste + " + caloriasQ*1000 + " puntos!");
                 modal.setVisibility(View.INVISIBLE);
-                fab.setVisibility(View.VISIBLE);
-                friends.setVisibility(View.VISIBLE);
                 nuevoRecorrido.setVisibility(View.INVISIBLE);
                 rutaCreada.setVisibility(View.INVISIBLE);
                 buscarPrincipal.setVisibility(View.VISIBLE);
                 if (mMap!=null)
                     mMap.clear();
+                back.setVisibility(View.VISIBLE);
+                score.setVisibility(View.VISIBLE);
+
             }
         });
 
@@ -269,11 +311,12 @@ public class MapsActivity extends FragmentActivity
             @Override
             public	void	onLocationResult(LocationResult locationResult)	 {
                 Location	location	=	locationResult.getLastLocation();
-                Log.i("LOCATION",	"Location	update	in	the	callback:	"	+	location);
+                Log.i("LOCATION",	"Location	update	in	the	callback: periodico	"	+	location);
                 if	(location	 !=	null)	{
                     //ACA SE OBTIENEN LOS DATOS----------------------------------------------------------########################################
                     lat=location.getLatitude();
                     lon=location.getLongitude();
+                    camino.add(new Ubicacion(lat,lon));
                     if (mMap!=null)
                     {
                         focused=false;
@@ -463,7 +506,7 @@ public class MapsActivity extends FragmentActivity
     protected	LocationRequest createLocationRequest()	 {
         LocationRequest mLocationRequest =	new	LocationRequest();
         mLocationRequest.setInterval(1000);	 //tasa de	refresco en	milisegundos
-        mLocationRequest.setFastestInterval(5000);	 //máxima tasa de	refresco
+        mLocationRequest.setFastestInterval(500);	 //máxima tasa de	refresco
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         return	mLocationRequest;
     }
@@ -538,18 +581,6 @@ public class MapsActivity extends FragmentActivity
 
     @Override
     protected	void	onActivityResult(int requestCode,	 int resultCode,	 Intent	 data)	 {
-        Log.i("codifgo", ""+requestCode);
-        if (requestCode ==REQUEST_LUGAR){
-            CameraPosition pos= this.mMap.getCameraPosition();
-            double lati= pos.target.latitude;
-            double longi= pos.target.longitude;
-            Log.i("LLEGOOO",""+longi);
-            Intent inte = new Intent(this, CrearLugarActivity.class);
-            inte.putExtra("lati", lati);
-            inte.putExtra("longi",longi);
-            setResult(REQUEST_LUGAR, inte);
-           finish();
-        }
         switch	(requestCode)	 {
             case	REQUEST_CHECK_SETTINGS:	 {
                 if	(resultCode ==	RESULT_OK)	 {
@@ -560,17 +591,6 @@ public class MapsActivity extends FragmentActivity
                             Toast.LENGTH_LONG).show();
                 }
                 return;
-            }
-            case REQUEST_LUGAR: {
-                //// TODO: 20/11/2017
-                CameraPosition pos= this.mMap.getCameraPosition();
-                double lati= pos.target.latitude;
-                double longi= pos.target.longitude;
-                Log.i("LLEGOOO",""+longi);
-                Intent inte = new Intent(this, CrearLugarActivity.class);
-                inte.putExtra("lati", lati);
-                inte.putExtra("longi",longi);
-                startActivity(inte);
             }
         }
     }
@@ -781,19 +801,4 @@ public class MapsActivity extends FragmentActivity
         }
         return poly;
     }
-
-    public String getFacebookPageURL(Context context) {
-        PackageManager packageManager = context.getPackageManager();
-        try {
-            int versionCode = packageManager.getPackageInfo("com.facebook.katana", 0).versionCode;
-            if (versionCode >= 3002850) { //newer versions of fb app
-                return "fb://facewebmodal/f?href=" + FACEBOOK_URL;
-            } else { //older versions of fb app
-                return "fb://page/" + FACEBOOK_PAGE_ID;
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            return FACEBOOK_URL; //normal web url
-        }
-    }
-
 }
